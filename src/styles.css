@@ -32,3 +32,20 @@
   display: block;
 }
 
+.PopupListOption:focus {
+  outline: 0;
+  color: white;
+  background: hsl(200, 50%, 50%);
+}
+
+.PopupListOption {
+  display: block;
+  padding: 2px 16px;
+  cursor: default;
+}
+
+.PopupListOption--isSelected:before {
+  content: '✓';
+  position: absolute;
+  left: 4px;
+}

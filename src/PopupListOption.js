@@ -2,8 +2,6 @@ var React = require('react');
 
 var joinClasses = require('react/lib/joinClasses');
 
-require('./PopupListOption.css');
-
 var PopupListOption = React.createClass({
 
   propTypes: {

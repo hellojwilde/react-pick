@@ -11,8 +11,6 @@ var getARIADescendantId = require('./helpers/getARIADescendantId');
 var getLabelForOption = require('./defaults/getLabelForOption');
 var joinClasses = require('react/lib/joinClasses');
 
-require('./Combobox.css');
-
 var guid = 0;
 
 var Combobox = React.createClass({

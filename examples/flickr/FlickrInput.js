@@ -1,6 +1,8 @@
 var React = require('react');
 var {Combobox} = require('../../src');
 
+require('../../src/styles.css');
+
 var throttle = require('./throttle');
 
 const FLICKR_URL = 

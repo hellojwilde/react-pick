@@ -2,6 +2,8 @@ var React = require('react');
 var StateData = require('./StateData');
 var {Combobox} = require('../../src');
 
+require('../../src/styles.css');
+
 var StateInput = React.createClass({
 
   getOptionsForInput: function(inputValue, callback) {
