@@ -1,25 +1,25 @@
-# react-combobox
+# react-pick
 
 A flexible autocompleting combobox for React. 
 
-Intially derived from Ryan Florence's [react-autocomplete](https://github.com/rackt/react-autocomplete), but there's been a lot of different changes made since then.
+Intially derived from Ryan Florence's awesome [react-autocomplete](https://github.com/rackt/react-autocomplete).
 
 ## Installation
 
-`npm install hellojwilde/react-combobox`
+`npm install react-pick`
 
 You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow.
 
 ## Demo
 
-http://jwilde.me/react-combobox/example/
+http://jwilde.me/react-pick/example/
 
 ## How do you use it?
 
 The same way you would use an input component in React.
 
 ```js
-var Combobox = require('react-combobox');
+var Combobox = require('react-pick');
 
 var AWESOME_PEOPLE = [
   'Ryan Florence',
@@ -61,5 +61,5 @@ var MyAppWithACombobox = React.createClass({
 });
 ```
 
-Check out more [examples](https://github.com/hellojwilde/react-combobox/tree/master/examples).
+Check out more [examples](https://github.com/hellojwilde/react-pick/tree/master/examples).
 

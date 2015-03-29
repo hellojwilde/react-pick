@@ -45,7 +45,7 @@ var Combobox = React.createClass({
      * rendered in the popup list. Default is the value coerced to a string.
      * @type {function}
      */
-    getRenderedOption: React.PropTypes.func,
+    renderOption: React.PropTypes.func,
 
     /**
      * For a given input string typed by the user, calls a callback when
@@ -149,7 +149,8 @@ var Combobox = React.createClass({
   },
 
   handleRequestSelect: function(isFromOptions, selectedValue) {
-    // XXX This is a hack to allow us to track 
+    // XXX This is a hack to ensure that we don't close the popup if we're
+    // somehow triggering a selection as we're moving into the popup.
     if (!isFromOptions && this.state.optionIndex != null) {
       return;
     }

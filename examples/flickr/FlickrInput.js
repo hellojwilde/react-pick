@@ -3,7 +3,8 @@ var Combobox = require('../../src/Combobox');
 
 var throttle = require('./throttle');
 
-const FLICKR_URL = 'http://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
+const FLICKR_URL = 
+  'http://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
 
 var FlickrInput = React.createClass({
 

@@ -1,5 +1,6 @@
-var React = require('react');
+var ExampleConstants = require('../ExampleConstants');
 var FlickrInput = require('./FlickrInput');
+var React = require('react');
 
 var App = React.createClass({
 
@@ -32,8 +33,13 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>React Combobox</h1>
-        <p><a href="https://github.com/hellojwilde/react-combobox/blob/master/examples/flickr/index.js">Demo Source</a></p>
+        <h1>react-pick</h1>
+        <h2>Basic Example</h2>
+        <p>
+          <a href={`${ExampleConstants.publicPath}/flickr`}>
+            Demo Source
+          </a>
+        </p>
         <FlickrInput
           value={this.state.value}
           onChange={this.handleChange}

@@ -1,3 +1,4 @@
+var ExampleConstants = require('../ExampleConstants');
 var React = require('react');
 var StateInput = require('./StateInput');
 
@@ -19,8 +20,13 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>React Combobox</h1>
-        <p><a href="https://github.com/hellojwilde/react-combobox/blob/master/examples/basic/index.js">Demo Source</a></p>
+        <h1>react-pick</h1>
+        <h2>Basic Example</h2>
+        <p>
+          <a href={`${ExampleConstants.publicPath}/basic`}>
+            Demo Source
+          </a>
+        </p>
         <p>Selected State: {this.state.comboboxValue.selectedValue.id}</p>
         <StateInput 
           value={this.state.comboboxValue} 
