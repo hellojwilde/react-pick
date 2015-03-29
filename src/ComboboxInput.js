@@ -1,15 +1,10 @@
 var React = require('react');
-var ComboboxKeyDownMixin = require('./ComboboxKeyDownMixin');
 
 var getActiveDescendantId = require('./getActiveDescendantId');
 
 require('./ComboboxInput.css');
 
-const KEYDOWN_BACKSPACE = 8;
-
 var ComboboxInput = React.createClass({
-
-  mixins: [ComboboxKeyDownMixin],
 
   propTypes: {
     autocomplete: React.PropTypes.oneOf(['both', 'inline', 'list']).isRequired,
@@ -18,9 +13,6 @@ var ComboboxInput = React.createClass({
     getLabelSelectionRange: React.PropTypes.func.isRequired,
     inputValue: React.PropTypes.string.isRequired,
     onRequestChange: React.PropTypes.func.isRequired,
-    onRequestClose: React.PropTypes.func.isRequired,
-    onRequestFocusNext: React.PropTypes.func.isRequired,
-    onRequestFocusPrevious: React.PropTypes.func.isRequired,
     onRequestSelect: React.PropTypes.func.isRequired,
     optionIndex: React.PropTypes.number,
     popupId: React.PropTypes.string.isRequired
@@ -28,13 +20,26 @@ var ComboboxInput = React.createClass({
 
   getInitialState: function() {
     return {
-      isBackspacing: false
+      isInputIncreasing: false 
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    var inputLength = this.props.inputValue.length;
+    var nextInputLength = nextProps.inputValue.length;
+
+    if (inputLength !== nextInputLength) {
+      this.setState({isInputIncreasing: nextInputLength > inputLength});
+    }
+  },
+
   componentDidUpdate: function(prevProps, prevState) {
+    // We only want to autocomplete when we have an option to complete in the 
+    // textbox, and when the user is actively typing content into the textbox.
+    // Typing ahead when deleting text feels annoying.
+
     if (this.props.autocompleteOption == null ||
-        this.state.isBackspacing) {
+        !this.state.isInputIncreasing) {
       return;
     }
 
@@ -53,10 +58,9 @@ var ComboboxInput = React.createClass({
     }
   },
 
-  requestSelect: function() {
-    if (this.props.autocompleteOption != null) {
-      this.props.onRequestSelect(this.props.autocompleteOption);
-    }
+  select: function() {
+    var {autocompleteOption, onRequestSelect} = this.props;
+    autocompleteOption && onRequestSelect(autocompleteOption);
   },
 
   handleChange: function(event) {
@@ -64,12 +68,7 @@ var ComboboxInput = React.createClass({
   },
 
   handleBlur: function() {
-    this.requestSelect();
-  },
-
-  handleKeyDown: function(event) {
-    this.setState({isBackspacing: event.keyCode === KEYDOWN_BACKSPACE});
-    this.handleStandardKeyDown(event, {onRequestSelect: this.requestSelect});
+    this.select();
   },
 
   render: function() {
@@ -80,7 +79,6 @@ var ComboboxInput = React.createClass({
         value={this.props.inputValue}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-        onKeyDown={this.handleKeyDown}
         role="combobox"
         aria-activedescendant={getActiveDescendantId(
           this.props.popupId,
@@ -88,6 +86,7 @@ var ComboboxInput = React.createClass({
         )}
         aria-autocomplete={this.props.autocomplete}
         aria-owns={this.props.popupId}
+        {...this.props}
       />
     );
   }

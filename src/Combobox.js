@@ -2,6 +2,7 @@ var ComboboxList = require('./ComboboxList');
 var ComboboxEmpty = require('./ComboboxEmpty');
 var ComboboxFetching = require('./ComboboxFetching');
 var ComboboxInput = require('./ComboboxInput');
+var ComboboxKeyBindings = require('./ComboboxKeyBindings');
 var React = require('react/addons');
 
 var assign = require('object-assign');
@@ -97,7 +98,6 @@ var Combobox = React.createClass({
         }
       },
       getLabelForOption: (value) => ''+value,
-      getRenderedOption: (value) => ''+value,
       getOptionsForInput: (inputValue, callback) => callback([]),
       value: {inputValue: '', value: null},
       onSelect: () => {}
@@ -197,12 +197,12 @@ var Combobox = React.createClass({
     if (this.state.options.length == 0) {
       return <ComboboxEmpty/>;
     }
-    
+
     return (
       <ComboboxList
         aria-expanded={this.state.isOpen+''}
         getLabelForOption={this.props.getLabelForOption}
-        getRenderedOption={this.props.getRenderedOption}
+        renderOption={this.props.renderOption}
         inputValue={this.props.value.inputValue}
         onRequestClose={this.handleRequestClose}
         onRequestFocus={this.handleRequestFocus}
@@ -222,21 +222,22 @@ var Combobox = React.createClass({
 
     return (
       <div className={joinClasses('Combobox', className)}>
-        <ComboboxInput
-          autocomplete={this.props.autocomplete}
-          autocompleteOption={this.state.autocompleteOption}
-          getLabelForOption={this.props.getLabelForOption}
-          getLabelSelectionRange={this.props.getLabelSelectionRange}
-          inputValue={value.inputValue}
-          onRequestChange={this.handleRequestChange}
+        <ComboboxKeyBindings
           onRequestClose={this.handleRequestClose}
-          onRequestFocus={this.handleRequestFocus}
           onRequestFocusNext={this.handleRequestFocusNext}
-          onRequestFocusPrevious={this.handleRequestFocusPrevious}
-          onRequestSelect={this.handleRequestSelect.bind(this, false)}
-          optionIndex={this.state.optionIndex}
-          popupId={this.state.popupId}
-        />
+          onRequestFocusPrevious={this.handleRequestFocusPrevious}>
+          <ComboboxInput
+            autocomplete={this.props.autocomplete}
+            autocompleteOption={this.state.autocompleteOption}
+            getLabelForOption={this.props.getLabelForOption}
+            getLabelSelectionRange={this.props.getLabelSelectionRange}
+            inputValue={value.inputValue}
+            onRequestChange={this.handleRequestChange}
+            onRequestSelect={this.handleRequestSelect.bind(this, false)}
+            optionIndex={this.state.optionIndex}
+            popupId={this.state.popupId}
+          />
+        </ComboboxKeyBindings>
         <span
           aria-hidden="true"
           className="Combobox-button"

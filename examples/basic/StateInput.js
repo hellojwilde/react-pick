@@ -37,7 +37,7 @@ var StateInput = React.createClass({
         {...this.props}
         getOptionsForInput={this.getOptionsForInput}
         getLabelForOption={this.getLabelForOption}
-        getRenderedOption={this.getLabelForOption}
+        renderOption={this.getLabelForOption}
       />
     );
   }
