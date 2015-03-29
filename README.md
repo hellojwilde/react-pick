@@ -8,7 +8,7 @@ Intially derived from Ryan Florence's [react-autocomplete](https://github.com/ra
 
 `npm install hellojwilde/react-combobox`
 
-You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow.
+You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow. Or write a better stylesheet for your own site.
 
 ## Demo
 
