@@ -8,7 +8,7 @@ Intially derived from Ryan Florence's awesome [react-autocomplete](https://githu
 
 `npm install react-pick`
 
-You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow.
+You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow. Or write a better stylesheet for your own site.
 
 ## Demo
 
@@ -19,7 +19,8 @@ http://jwilde.me/react-pick/example/
 The same way you would use an input component in React.
 
 ```js
-var Combobox = require('react-pick');
+var Combobox = require('react-combobox');
+var React = require('react');
 
 var AWESOME_PEOPLE = [
   'Ryan Florence',
