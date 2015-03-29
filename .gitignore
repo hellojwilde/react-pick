@@ -2,3 +2,4 @@ examples/build
 lib
 node_modules
 .DS_Store
+.publish
