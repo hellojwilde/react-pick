@@ -20,6 +20,7 @@ The same way you would use an input component in React.
 
 ```js
 var Combobox = require('react-combobox');
+var React = require('react');
 
 var AWESOME_PEOPLE = [
   'Ryan Florence',
