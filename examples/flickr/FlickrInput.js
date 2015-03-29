@@ -16,21 +16,22 @@ var FlickrInput = React.createClass({
     );
   }),
 
-  getRenderedOption: function(option) {
-    return <img src={option.media.m} height="50" />;
-  },
-
   getLabelForOption: function(option) {
     return '';
+  },
+
+  renderOption: function(option) {
+    return <img src={option.media.m} height="50" />;
   },
 
   render: function() {
     return (
       <Combobox
         {...this.props}
+        autocomplete="list"
         getOptionsForInput={this.getOptionsForInput}
-        getRenderedOption={this.getRenderedOption}
         getLabelForOption={this.getLabelForOption}
+        renderOption={this.renderOption}
       />
     );
   }

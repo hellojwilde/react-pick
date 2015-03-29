@@ -1,13 +1,15 @@
-var ComboboxList = require('./ComboboxList');
-var ComboboxEmpty = require('./ComboboxEmpty');
-var ComboboxFetching = require('./ComboboxFetching');
-var ComboboxInput = require('./ComboboxInput');
 var ComboboxKeyBindings = require('./ComboboxKeyBindings');
-var React = require('react/addons');
+var PopupList = require('./PopupList');
+var PopupListEmpty = require('./PopupListEmpty');
+var PopupListFetching = require('./PopupListFetching');
+var React = require('react');
+var TypeaheadInput = require('./TypeaheadInput');
 
 var assign = require('object-assign');
+var emptyFunction = require('./helpers/emptyFunction');
+var getARIADescendantId = require('./helpers/getARIADescendantId');
+var getStringForElements = require('./helpers/getStringForElements');
 var joinClasses = require('react/lib/joinClasses');
-var cloneWithProps = React.addons.cloneWithProps;
 
 require('./Combobox.css');
 
@@ -23,6 +25,7 @@ var Combobox = React.createClass({
      *  - `selectedValue` is the selected autocompletion value in the combobox.
      *    Defaults to null when nothing is selected.
      * @type {object}
+     * @required
      */
     value: React.PropTypes.shape({
       inputValue: React.PropTypes.string,
@@ -32,8 +35,17 @@ var Combobox = React.createClass({
     /**
      * Handler fired whenever the `value` changes with the updated value object.
      * @type {function}
+     * @required
      */
     onChange: React.PropTypes.func.isRequired,
+
+    /**
+     * For a given input string typed by the user, calls a callback when
+     * new autocompletion results are available.
+     * @type {function}
+     * @required
+     */
+    getOptionsForInput: React.PropTypes.func.isRequired,
 
     /**
      * The autocompletion behavior:
@@ -44,13 +56,6 @@ var Combobox = React.createClass({
      * @type {string}
      */
     autocomplete: React.PropTypes.oneOf(['both', 'inline', 'list']),
-
-    /**
-     * For a given input string typed by the user, calls a callback when
-     * new autocompletion results are available.
-     * @type {function}
-     */
-    getOptionsForInput: React.PropTypes.func,
 
     /**
      * For a given autocomplete value, returns the contents that should be
@@ -85,30 +90,17 @@ var Combobox = React.createClass({
   getDefaultProps: function() {
     return {
       autocomplete: 'both',
-      getLabelSelectionRange: function(inputValue, label) {
-        inputValue = inputValue.toLowerCase();
-        label = label.toLowerCase();
-
-        if (inputValue === '' || inputValue === label) {
-          return null;
-        } else if (label.indexOf(inputValue) === -1) {
-          return null;
-        } else {
-          return {start: inputValue.length, end: label.length};
-        }
-      },
-      getLabelForOption: (value) => ''+value,
-      getOptionsForInput: (inputValue, callback) => callback([]),
+      getLabelForOption: getStringForElements,
       value: {inputValue: '', value: null},
-      onSelect: () => {}
+      onSelect: emptyFunction
     };
   },
 
   getInitialState: function() {
     return {
-      autocompleteOption: null,
       isOpen: false,
       isFetching: false,
+      optionAutcompletion: null,
       optionIndex: null,
       options: [],
       popupId: 'Combobox-list-'+(++guid)
@@ -126,22 +118,32 @@ var Combobox = React.createClass({
     );
   },
 
+  isShowingMenu: function() {
+    return ['list', 'both'].indexOf(this.props.autocomplete) !== -1;
+  },
+
+  isShowingInline: function() {
+    return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
+  },
+
   handleButtonClick: function() {
     this.setState({isOpen: !this.state.isOpen});
   },
 
   handleRequestChange: function(inputValue) {
     this.setState({
-      isOpen: ['list', 'both'].indexOf(this.props.autocomplete) !== -1, 
+      isOpen: this.isShowingMenu(),
+      optionAutcompletion: null,
       optionIndex: null
     });
 
     this.props.onChange(assign({}, this.props.value, {inputValue}));
 
     this.fetchListOptions(inputValue, () => {
-      this.state.options.length > 0 && this.setState({
-        autocompleteOption: this.state.options[0]
-      });
+      if (this.state.options.length == 0 || !this.isShowingInline()) {
+        return;
+      }
+      this.setState({optionAutcompletion: this.state.options[0]});
     });
   },
 
@@ -191,18 +193,19 @@ var Combobox = React.createClass({
 
   renderPopupContent: function() {
     if (this.state.isFetching) {
-      return <ComboboxFetching/>;
+      return <PopupListFetching/>;
     }
 
     if (this.state.options.length == 0) {
-      return <ComboboxEmpty/>;
+      return <PopupListEmpty/>;
     }
 
     return (
-      <ComboboxList
+      <PopupList
         aria-expanded={this.state.isOpen+''}
         getLabelForOption={this.props.getLabelForOption}
         renderOption={this.props.renderOption}
+        id={this.state.popupId}
         inputValue={this.props.value.inputValue}
         onRequestClose={this.handleRequestClose}
         onRequestFocus={this.handleRequestFocus}
@@ -211,7 +214,6 @@ var Combobox = React.createClass({
         onRequestSelect={this.handleRequestSelect.bind(this, true)}
         optionIndex={this.state.optionIndex}
         options={this.state.options}
-        popupId={this.state.popupId}
         role="listbox"
       />
     );
@@ -226,16 +228,21 @@ var Combobox = React.createClass({
           onRequestClose={this.handleRequestClose}
           onRequestFocusNext={this.handleRequestFocusNext}
           onRequestFocusPrevious={this.handleRequestFocusPrevious}>
-          <ComboboxInput
-            autocomplete={this.props.autocomplete}
-            autocompleteOption={this.state.autocompleteOption}
+          <TypeaheadInput
+            aria-activedescendant={getARIADescendantId(
+              this.state.popupId,
+              this.state.optionIndex
+            )}
+            aria-autocomplete={this.props.autocomplete}
+            aria-owns={this.state.popupId}
+            autocompletion={this.state.optionAutcompletion}
+            className="Combobox-input"
             getLabelForOption={this.props.getLabelForOption}
             getLabelSelectionRange={this.props.getLabelSelectionRange}
             inputValue={value.inputValue}
             onRequestChange={this.handleRequestChange}
             onRequestSelect={this.handleRequestSelect.bind(this, false)}
-            optionIndex={this.state.optionIndex}
-            popupId={this.state.popupId}
+            role="combobox"
           />
         </ComboboxKeyBindings>
         <span

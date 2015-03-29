@@ -2,9 +2,9 @@ var React = require('react');
 
 var joinClasses = require('react/lib/joinClasses');
 
-require('./ComboboxListOption.css');
+require('./PopupListOption.css');
 
-var ComboboxListOption = React.createClass({
+var PopupListOption = React.createClass({
 
   propTypes: {
     onRequestSelect: React.PropTypes.func.isRequired,
@@ -38,10 +38,11 @@ var ComboboxListOption = React.createClass({
         tabIndex="-1"
         role="option"
         className={joinClasses(
-          'ComboboxListOption', 
-          this.props.isSelected && 'ComboboxListOption--isSelected',
+          'PopupListOption', 
+          this.props.isSelected && 'PopupListOption--isSelected',
           className
         )}
+        onClick={this.select}
         onMouseEnter={this.handleMouseEnter}
         {...otherProps}>
         {renderOption(option)}
@@ -51,4 +52,4 @@ var ComboboxListOption = React.createClass({
 
 });
 
-module.exports = ComboboxListOption;
+module.exports = PopupListOption;

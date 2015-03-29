@@ -3,6 +3,14 @@
   position: relative;
 }
 
+.Combobox-input {
+  padding-right: 20px;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .Combobox-button {
   display: inline-block;
   position: absolute;

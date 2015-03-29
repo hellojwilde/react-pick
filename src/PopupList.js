@@ -1,21 +1,21 @@
 var React = require('react');
-var ComboboxListOption = require('./ComboboxListOption');
+var PopupListOption = require('./PopupListOption');
 var ComboboxKeyBindings = require('./ComboboxKeyBindings');
 
-var getActiveDescendantId = require('./getActiveDescendantId');
+var getARIADescendantId = require('./helpers/getARIADescendantId');
 
-var ComboboxList = React.createClass({
+var PopupList = React.createClass({
 
   propTypes: {
     getLabelForOption: React.PropTypes.func.isRequired,
-    renderOption: React.PropTypes.func,
+    id: React.PropTypes.string.isRequired,
     inputValue: React.PropTypes.string,
     onRequestClose: React.PropTypes.func.isRequired,
-    onRequestSelect: React.PropTypes.func.isRequired,
     onRequestFocus: React.PropTypes.func.isRequired,
+    onRequestSelect: React.PropTypes.func.isRequired,
     optionIndex: React.PropTypes.number,
     options: React.PropTypes.array.isRequired,
-    popupId: React.PropTypes.string.isRequired
+    renderOption: React.PropTypes.func,
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -34,15 +34,17 @@ var ComboboxList = React.createClass({
   },
 
   render: function() {
+    var {id, ...otherProps} = this.props;
+
     return (
-      <div id={this.props.popupId} className="ComboboxList">
+      <div id={id}>
         {this.props.options.map((option, index) => {
           var label = this.props.getLabelForOption(option);
 
           return (
-            <ComboboxKeyBindings {...this.props} key={index} ref={index}>
-              <ComboboxListOption 
-                id={getActiveDescendantId(this.props.popupId, index)}
+            <ComboboxKeyBindings {...otherProps} key={index} ref={index}>
+              <PopupListOption 
+                id={getARIADescendantId(this.props.id, index)}
                 option={option}
                 optionIndex={index}
                 renderOption={this.props.renderOption}
@@ -61,4 +63,4 @@ var ComboboxList = React.createClass({
 
 });
 
-module.exports = ComboboxList;
+module.exports = PopupList;
