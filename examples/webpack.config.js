@@ -2,12 +2,15 @@ var path = require('path');
 var fs = require('fs');
 
 function getEntrypoints() {
-  return fs.readdirSync('.')
+  return fs.readdirSync(__dirname)
     .filter(function(dir) { 
-      return dir !== 'build' && fs.lstatSync(dir).isDirectory(); 
+      return (
+        dir !== 'build' && 
+        fs.lstatSync(path.join(__dirname, dir)).isDirectory()
+      ); 
     })
     .reduce(function(entries, dir) {
-      entries[dir] = './' + dir + '/index.js';
+      entries[dir] = path.join(__dirname, dir, 'index.js');
       return entries;
     }, {});
 }
