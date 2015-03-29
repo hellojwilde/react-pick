@@ -1,5 +1,5 @@
 var React = require('react');
-var Combobox = require('../../src/Combobox');
+var {Combobox} = require('../../src');
 
 var throttle = require('./throttle');
 

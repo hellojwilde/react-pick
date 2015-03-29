@@ -4,26 +4,10 @@
 }
 
 .Combobox-input {
-  padding-right: 20px;
   width: 100%;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-.Combobox-button {
-  display: inline-block;
-  position: absolute;
-  cursor: default;
-  outline: none;
-  top: 2px;
-  right: 6px;
-  font-size: 14px;
-  cursor: default;
-}
-
-.Combobox-button:active {
-  color: #4095BF;
 }
 
 .Combobox-popup {

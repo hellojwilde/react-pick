@@ -126,10 +126,6 @@ var Combobox = React.createClass({
     return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
   },
 
-  handleButtonClick: function() {
-    this.setState({isOpen: !this.state.isOpen});
-  },
-
   handleRequestChange: function(inputValue) {
     this.setState({
       isOpen: this.isShowingMenu(),
@@ -249,12 +245,6 @@ var Combobox = React.createClass({
             role="combobox"
           />
         </ComboboxKeyBindings>
-        <span
-          aria-hidden="true"
-          className="Combobox-button"
-          onClick={this.handleButtonClick}>
-          ▾
-        </span>
         <div className={joinClasses(
           'Combobox-popup',
           this.state.isOpen && 'Combobox-popup--is-open'
