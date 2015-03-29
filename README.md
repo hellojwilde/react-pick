@@ -20,7 +20,7 @@ You'll need to make sure you're including the `styles.css` file in the root of t
 The same way you would use an input component in React.
 
 ```js
-var Combobox = require('react-pick');
+var {Combobox} = require('react-pick');
 var React = require('react');
 
 var AWESOME_PEOPLE = [

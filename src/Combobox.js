@@ -8,7 +8,7 @@ var TypeaheadInput = require('./TypeaheadInput');
 var assign = require('object-assign');
 var emptyFunction = require('./helpers/emptyFunction');
 var getARIADescendantId = require('./helpers/getARIADescendantId');
-var getStringForElements = require('./helpers/getStringForElements');
+var getLabelForOption = require('./defaults/getLabelForOption');
 var joinClasses = require('react/lib/joinClasses');
 
 require('./Combobox.css');
@@ -90,8 +90,8 @@ var Combobox = React.createClass({
   getDefaultProps: function() {
     return {
       autocomplete: 'both',
-      getLabelForOption: getStringForElements,
-      value: {inputValue: '', value: null},
+      getLabelForOption: getLabelForOption,
+      value: {inputValue: '', selectedValue: null},
       onSelect: emptyFunction
     };
   },
@@ -100,7 +100,7 @@ var Combobox = React.createClass({
     return {
       isOpen: false,
       isFetching: false,
-      optionAutcompletion: null,
+      optionInline: null,
       optionIndex: null,
       options: [],
       popupId: 'Combobox-list-'+(++guid)
@@ -133,17 +133,20 @@ var Combobox = React.createClass({
   handleRequestChange: function(inputValue) {
     this.setState({
       isOpen: this.isShowingMenu(),
-      optionAutcompletion: null,
+      optionInline: null,
       optionIndex: null
     });
 
-    this.props.onChange(assign({}, this.props.value, {inputValue}));
+    this.props.onChange({
+      inputValue: inputValue,
+      selectedValue: null
+    });
 
     this.fetchListOptions(inputValue, () => {
       if (this.state.options.length == 0 || !this.isShowingInline()) {
         return;
       }
-      this.setState({optionAutcompletion: this.state.options[0]});
+      this.setState({optionInline: this.state.options[0]});
     });
   },
 
@@ -154,6 +157,7 @@ var Combobox = React.createClass({
   handleRequestSelect: function(isFromOptions, selectedValue) {
     // XXX This is a hack to ensure that we don't close the popup if we're
     // somehow triggering a selection as we're moving into the popup.
+
     if (!isFromOptions && this.state.optionIndex != null) {
       return;
     }
@@ -235,13 +239,13 @@ var Combobox = React.createClass({
             )}
             aria-autocomplete={this.props.autocomplete}
             aria-owns={this.state.popupId}
-            autocompletion={this.state.optionAutcompletion}
             className="Combobox-input"
             getLabelForOption={this.props.getLabelForOption}
             getLabelSelectionRange={this.props.getLabelSelectionRange}
-            inputValue={value.inputValue}
-            onRequestChange={this.handleRequestChange}
-            onRequestSelect={this.handleRequestSelect.bind(this, false)}
+            value={value.inputValue}
+            option={this.state.optionInline}
+            onChange={this.handleRequestChange}
+            onSelect={this.handleRequestSelect.bind(this, false)}
             role="combobox"
           />
         </ComboboxKeyBindings>

@@ -18,6 +18,8 @@ var App = React.createClass({
   },
 
   render: function() {
+    var {selectedValue} = this.state.comboboxValue;
+
     return (
       <div>
         <h1>react-pick</h1>
@@ -27,7 +29,7 @@ var App = React.createClass({
             Demo Source
           </a>
         </p>
-        <p>Selected State: {this.state.comboboxValue.selectedValue.id}</p>
+        <p>Selected State: {selectedValue && selectedValue.id}</p>
         <StateInput 
           value={this.state.comboboxValue} 
           onChange={this.handleComboboxChange}

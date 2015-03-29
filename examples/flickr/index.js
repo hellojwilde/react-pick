@@ -8,7 +8,7 @@ var App = React.createClass({
     return {
       value: {
         inputValue: '', 
-        value: ''
+        selectedValue: ''
       },
       selections: []
     };

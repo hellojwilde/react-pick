@@ -1,37 +1,28 @@
 var React = require('react');
 
 var emptyFunction = require('./helpers/emptyFunction');
-var getStringForElements = require('./helpers/getStringForElements');
+var getLabelForOption = require('./defaults/getLabelForOption');
+var getLabelSelectionRange = require('./defaults/getLabelSelectionRange');
 
 var TypeaheadInput = React.createClass({
 
   propTypes: {
-    autocompletion: React.PropTypes.any,
     getLabelForOption: React.PropTypes.func,
     getLabelSelectionRange: React.PropTypes.func,
-    inputValue: React.PropTypes.string,
-    onRequestChange: React.PropTypes.func,
-    onRequestSelect: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    onSelect: React.PropTypes.func,
+    option: React.PropTypes.any,
+    value: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      getLabelSelectionRange: function(inputValue, label) {
-        inputValue = inputValue.toLowerCase();
-        label = label.toLowerCase();
-
-        if (inputValue === '' || inputValue === label) {
-          return null;
-        } else if (label.indexOf(inputValue) === -1) {
-          return null;
-        } else {
-          return {start: inputValue.length, end: label.length};
-        }
-      },
-      getLabelForOption: getStringForElements,
-      inputValue: '',
-      onRequestChange: emptyFunction,
-      onRequestSelect: emptyFunction
+      getLabelForOption: getLabelForOption,
+      getLabelSelectionRange: getLabelSelectionRange,
+      onChange: emptyFunction,
+      onSelect: emptyFunction,
+      option: null,
+      value: ''
     };
   },
 
@@ -42,8 +33,8 @@ var TypeaheadInput = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var inputLength = this.props.inputValue.length;
-    var nextInputLength = nextProps.inputValue.length;
+    var inputLength = this.props.value.length;
+    var nextInputLength = nextProps.value.length;
 
     if (inputLength !== nextInputLength) {
       this.setState({isTypingForward: nextInputLength > inputLength});
@@ -55,18 +46,18 @@ var TypeaheadInput = React.createClass({
     // textbox, and when the user is actively typing content into the textbox.
     // Typing ahead when deleting text feels annoying.
 
-    if (this.props.autocompletion == null || !this.state.isTypingForward) {
+    if (this.props.option == null || !this.state.isTypingForward) {
       return;
     }
 
     // Provided that we have an autocomplete option, and we're not currently
-    // trying getting rid of text from the box, inset a possible autocompletion
+    // trying getting rid of text from the box, inset a possible option
     // result and highlight the part that was inserted.
 
     var input = this.refs['input'].getDOMNode();
-    var {inputValue, autocompletion} = this.props;
-    var label = this.props.getLabelForOption(autocompletion);
-    var range = this.props.getLabelSelectionRange(inputValue, label);
+    var {value, option} = this.props;
+    var label = this.props.getLabelForOption(option);
+    var range = this.props.getLabelSelectionRange(value, label);
 
     if (range) {
       input.value = label;
@@ -75,12 +66,11 @@ var TypeaheadInput = React.createClass({
   },
 
   select: function() {
-    var {autocompletion, onRequestSelect} = this.props;
-    autocompletion && onRequestSelect(autocompletion);
+    this.props.option && this.props.onSelect(this.props.option);
   },
 
   handleChange: function(event) {
-    this.props.onRequestChange(event.target.value);
+    this.props.onChange(event.target.value);
   },
 
   handleBlur: function() {
@@ -88,15 +78,14 @@ var TypeaheadInput = React.createClass({
   },
 
   render: function() {
-    var {inputValue, ...otherProps} = this.props;
+    var {onChange, onSelect, ...otherProps} = this.props;
 
     return (
       <input
+        {...otherProps}
         ref="input"
-        value={inputValue}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-        {...otherProps}
       />
     );
   }
