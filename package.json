@@ -1,5 +1,5 @@
 {
-  "name": "react-combobox",
+  "name": "react-pick",
   "version": "0.1.0",
   "description": "",
   "main": "src/index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"no tests yet, just trust me\" && exit 0",
     "prepublish": "gulp build-node"
   },
-  "author": "",
+  "author": "Jonathan Wilde <hello@jwilde.me>",
   "license": "MIT",
   "dependencies": {
     "react": "^0.13.0"
