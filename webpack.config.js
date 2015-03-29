@@ -3,12 +3,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 
 module.exports = {
-  entry: './src/Combobox.js',
+  entry: './src/index.js',
 
   output: {
-    filename: '[name].js',
+    filename: 'index.js',
     path: path.join(__dirname, 'lib'),
-    library: 'Combobox',
+    library: 'react-pick',
     libraryTarget: 'commonjs2'
   },
 
@@ -25,4 +25,3 @@ module.exports = {
     new ExtractTextPlugin('styles.css')
   ]
 };
-
