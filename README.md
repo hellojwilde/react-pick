@@ -19,7 +19,7 @@ http://jwilde.me/react-pick/example/
 The same way you would use an input component in React.
 
 ```js
-var Combobox = require('react-combobox');
+var Combobox = require('react-pick');
 var React = require('react');
 
 var AWESOME_PEOPLE = [
