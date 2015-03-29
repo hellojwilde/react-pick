@@ -218,7 +218,7 @@ var Combobox = React.createClass({
   },
 
   render: function() {
-    var {value, className} = this.props;
+    var {value, className, ...otherProps} = this.props;
 
     return (
       <div className={joinClasses('Combobox', className)}>
@@ -227,6 +227,7 @@ var Combobox = React.createClass({
           onRequestFocusNext={this.handleRequestFocusNext}
           onRequestFocusPrevious={this.handleRequestFocusPrevious}>
           <TypeaheadInput
+            {...otherProps}
             aria-activedescendant={getARIADescendantId(
               this.state.popupId,
               this.state.optionIndex
@@ -234,8 +235,6 @@ var Combobox = React.createClass({
             aria-autocomplete={this.props.autocomplete}
             aria-owns={this.state.popupId}
             className="Combobox-input"
-            getLabelForOption={this.props.getLabelForOption}
-            getLabelSelectionRange={this.props.getLabelSelectionRange}
             value={value.inputValue}
             option={this.state.optionInline}
             onChange={this.handleRequestChange}
