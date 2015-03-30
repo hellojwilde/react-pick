@@ -56,21 +56,6 @@ var Combobox = React.createClass({
     autocomplete: React.PropTypes.oneOf(['both', 'inline', 'list']),
 
     /**
-     * For a given autocomplete value, returns the contents that should be
-     * rendered in the popup list. Default is the value coerced to a string.
-     * @type {function}
-     */
-    renderOption: React.PropTypes.func,
-
-    /**
-     * For a given input value and autocomplete value label, returns the 
-     * selection range (an object containing `start` and `end` indexes)
-     * that should be selected.
-     * @type {function}
-     */
-    getLabelSelectionRange: React.PropTypes.func,
-
-    /**
      * For a given autocomplete value, returns the text that should be shown
      * in the input textbox of the autocomplete. Default is the value coerced
      * to a string.
@@ -189,36 +174,8 @@ var Combobox = React.createClass({
     );
   },
 
-  renderPopupContent: function() {
-    if (this.state.isFetching) {
-      return <PopupListFetching/>;
-    }
-
-    if (this.state.options.length == 0) {
-      return <PopupListEmpty/>;
-    }
-
-    return (
-      <PopupList
-        aria-expanded={this.state.isOpen+''}
-        getLabelForOption={this.props.getLabelForOption}
-        renderOption={this.props.renderOption}
-        id={this.state.popupId}
-        inputValue={this.props.value.inputValue}
-        onRequestClose={this.handleRequestClose}
-        onRequestFocus={this.handleRequestFocus}
-        onRequestFocusNext={this.handleRequestFocusNext}
-        onRequestFocusPrevious={this.handleRequestFocusPrevious}
-        onRequestSelect={this.handleRequestSelect.bind(this, true)}
-        optionIndex={this.state.optionIndex}
-        options={this.state.options}
-        role="listbox"
-      />
-    );
-  },
-
   render: function() {
-    var {value, className, ...otherProps} = this.props;
+    var {autocomplete, value, className, ...otherProps} = this.props;
 
     return (
       <div className={joinClasses('Combobox', className)}>
@@ -242,12 +199,21 @@ var Combobox = React.createClass({
             role="combobox"
           />
         </ComboboxKeyBindings>
-        <div className={joinClasses(
-          'Combobox-popup',
-          this.state.isOpen && 'Combobox-popup--is-open'
-        )}>
-          {this.renderPopupContent()}
-        </div>
+        <ComboboxPopup 
+          {...otherProps}
+          aria-expanded={this.state.isOpen+''}
+          id={this.state.popupId}
+          inputValue={this.props.value.inputValue}
+          isFetching={this.state.isFetching}
+          isOpen={this.state.isOpen}
+          onRequestClose={this.handleRequestClose}
+          onRequestFocus={this.handleRequestFocus}
+          onRequestFocusNext={this.handleRequestFocusNext}
+          onRequestFocusPrevious={this.handleRequestFocusPrevious}
+          onRequestSelect={this.handleRequestSelect.bind(this, true)}
+          optionIndex={this.state.optionIndex}
+          options={this.state.options}
+        />
       </div>
     );
   }
