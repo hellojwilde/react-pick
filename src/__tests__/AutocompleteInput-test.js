@@ -12,6 +12,7 @@ const KEY_TAB = 9;
 const KEY_BACKSPACE = 8;
 
 var AutocompleteInputTestWrapper = React.createClass({
+
   getDefaultProps: function() {
     return {
       initialValue: '',
@@ -48,9 +49,11 @@ var AutocompleteInputTestWrapper = React.createClass({
       />
     );
   }
-})
+
+});
 
 describe('AutocompleteInput', function() {
+
   it('shows some text, and supports typing', function() {
     var wrapper = TestUtils.renderIntoDocument(
       <AutocompleteInputTestWrapper initialValue="hello"/>
@@ -74,7 +77,7 @@ describe('AutocompleteInput', function() {
     );
 
     // Ensure that there's no typehead
-    var input = TestUtils.findRenderedDOMComponentWithTag(wrapper, "input");
+    var input = TestUtils.findRenderedDOMComponentWithTag(wrapper, 'input');
     expect(input.getDOMNode().value).toBe('');
 
     // Ensure that the typeahead shows up case-insensitively and is selected
@@ -103,7 +106,7 @@ describe('AutocompleteInput', function() {
     );
 
     // Ensure that there's no typehead
-    var input = TestUtils.findRenderedDOMComponentWithTag(wrapper, "input");
+    var input = TestUtils.findRenderedDOMComponentWithTag(wrapper, 'input');
     expect(input.getDOMNode().value).toBe('h');
 
     // Ensure that there's still no typeahead
@@ -115,4 +118,5 @@ describe('AutocompleteInput', function() {
     expect(input.getDOMNode().selectionStart).toBe(2);
     expect(input.getDOMNode().selectionEnd).toBe(2);
   });
+
 });
