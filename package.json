@@ -1,25 +1,43 @@
 {
   "name": "react-pick",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hellojwilde/react-pick.git"
+  },
+  "homepage": "https://github.com/hellojwilde/react-pick",
   "scripts": {
-    "test": "echo \"no tests yet, just trust me\" && exit 0",
+    "test": "karma start",
     "prepublish": "gulp build-node"
   },
-  "author": "Jonathan Wilde <hello@jwilde.me>",
+  "authors": [
+    "Ryan Florence",
+    "Jonathan Wilde"
+  ],
   "license": "MIT",
+  "dependencies": {
+    "object-assign": "^2.0.0"
+  },
   "peerDependencies": {
     "react": "^0.13.0"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",
-    "babel-loader": "^4.2.0",
-    "extract-text-webpack-plugin": "^0.5.0",
+    "expect": "^1.6.0",
     "gulp": "^3.8.11",
     "gulp-babel": "^4.0.0",
     "gulp-gh-pages": "^0.5.0",
     "gulp-webpack": "^1.3.1",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-cli": "0.0.4",
+    "karma-mocha": "^0.1.10",
+    "karma-sourcemap-loader": "^0.3.4",
+    "karma-webpack": "^1.5.0",
+    "mocha": "^2.2.1",
+    "react": "^0.13.1",
     "style-loader": "^0.9.0"
   },
   "keywords": [
@@ -28,8 +46,5 @@
     "typeahead",
     "combobox",
     "a11y"
-  ],
-  "dependencies": {
-    "object-assign": "^2.0.0"
-  }
+  ]
 }

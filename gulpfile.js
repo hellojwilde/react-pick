@@ -19,13 +19,11 @@ gulp.task('build-node-css', function() {
 
 gulp.task('build-node', ['build-node-js', 'build-node-css']);
 
-gulp.task('build-examples', function() {
+gulp.task('build-examples', ['build-node'], function() {
   return gulp.src('examples/')
     .pipe(webpack(examplesWebpackConfig))
     .pipe(gulp.dest('examples/build/'));
 });
-
-gulp.task('build', ['build-node', 'build-examples']);
 
 gulp.task('deploy', ['build-examples'], function() {
   return gulp.src('./examples/**/*')
