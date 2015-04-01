@@ -6,19 +6,6 @@ const KEY_RETURN = 13;
 const KEY_TAB = 9;
 const KEY_BACKSPACE = 8;
 
-/**
- * Given:
- *  - `value`, the text the user typed into the textbox, and 
- *  - `completionValue`, the value that should be typed ahead;
- *   
- * Returns an object with the keys:
- *  - `valueWithCompletion`, the value with typeahead to appear in the input,
- *  - `start`, the start index of the text that was typed ahead, and
- *  - `end`, the end index of the text that was typed ahead;
- *
- * Returns `null` in the event that there is no string match between `value`  
- * and `completionValue`--indicating that there are erroneous arguments passed.
- */
 function getCompletionTypeahead(value, completionValue) {
   value = (value || '').toLowerCase();
   completionValue = (completionValue || '').toLowerCase();
@@ -46,7 +33,7 @@ function getCompletionTypeahead(value, completionValue) {
  *
  *  - `completionValue`, the full predicted string to type into the textbox.
  *    For example, if you were trying to autocomplete dates, and the user typed 
- *    "Calif", you might supply "California" for this.
+ *    "Calif", you might supply "California" for this, and
  *  - `onComplete`, an event handler for when the user tabs or otherwise does
  *    an action to complete the text in the component.
  *
@@ -56,7 +43,6 @@ function getCompletionTypeahead(value, completionValue) {
 var AutocompleteInput = React.createClass({
 
   propTypes: {
-    autocomplete: React.PropTypes.oneOf(['inline', 'both']),
     completionValue: React.PropTypes.string,
     onComplete: React.PropTypes.func,
     value: React.PropTypes.string
@@ -64,7 +50,6 @@ var AutocompleteInput = React.createClass({
 
   getDefaultProps: function() {
     return {
-      autocomplete: 'inline',
       completionValue: null,
       onComplete: emptyFunction,
       value: null
@@ -79,7 +64,7 @@ var AutocompleteInput = React.createClass({
     // We only want to autocomplete when we have an option to complete in the 
     // textbox, and when the user is actively typing content into the textbox.
     // Typing ahead when deleting text feels annoying.
-  
+
     if (this.props.completionValue === null || 
         this.isTypingForward !== true) {
       return;
@@ -146,6 +131,7 @@ var AutocompleteInput = React.createClass({
     return (
       <input
         {...this.props}
+        aria-autocomplete={this.props['aria-autocomplete'] || 'inline'}
         ref="input"
         onBlur={this.handleBlur}
         onKeyDown={this.handleKeyDown}

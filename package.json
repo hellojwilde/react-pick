@@ -12,10 +12,7 @@
     "test": "karma start",
     "prepublish": "gulp build-node"
   },
-  "authors": [
-    "Ryan Florence",
-    "Jonathan Wilde"
-  ],
+  "author": "Jonathan Wilde <hello@jwilde.me>",
   "license": "MIT",
   "dependencies": {
     "object-assign": "^2.0.0"

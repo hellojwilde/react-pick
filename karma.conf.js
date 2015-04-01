@@ -32,12 +32,12 @@ module.exports = function(config) {
 
     plugins: [
       require('karma-chrome-launcher'),
+      require('karma-sourcemap-loader'),
       require('karma-mocha'),
       require('karma-webpack')
     ],
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
     reporters: ['dots'],
 
     // web server port
@@ -47,15 +47,12 @@ module.exports = function(config) {
     colors: true,
 
     // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || 
-    //                  config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
     // start these browsers
     browsers: ['Chrome'],
 
     // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
   });
 };
