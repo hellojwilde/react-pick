@@ -16,6 +16,8 @@ function getEntrypoints() {
 }
 
 module.exports = {
+  devtool: 'inline-source-map',
+  
   entry: getEntrypoints(),
 
   output: {
@@ -27,8 +29,8 @@ module.exports = {
 
   module: {
     loaders: [
-      {test: /\.js$/, loader: 'babel-loader?experimental=true'},
-      {test: /\.css$/, loader: 'style-loader!css-loader'}
+      {test: /\.css$/, loader: 'style-loader!css-loader'},
+      {test: /\.js$/, loader: 'babel-loader?experimental=true'}
     ]
   }
 };

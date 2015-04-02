@@ -1,17 +1,24 @@
 var ExampleConstants = require('../ExampleConstants');
 var React = require('react');
-var AutocompleteInput = require('../../src/AutocompleteInput');
+var StateInput = require('./StateInput');
 
 var App = React.createClass({
 
   getInitialState: function() {
     return {
-      value: ''
+      value: {
+        inputValue: '',
+        selectedValue: null
+      }
     };
   },
 
   handleChange: function(value) {
-    this.setState({value: value});
+    this.setState({value});
+  },
+
+  handleComplete: function(value) {
+    this.setState({value});
   },
 
   render: function() {
@@ -25,11 +32,10 @@ var App = React.createClass({
           </a>
         </p>
         <p>Selected State: </p>
-        <AutocompleteInput 
-          completionValue="California"
+        <StateInput 
           value={this.state.value} 
           onChange={this.handleChange}
-          onComplete={(change) => console.log(change)}
+          onComplete={this.handleComplete}
         />
         <div><button>something else to focus</button></div>
       </div>

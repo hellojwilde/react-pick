@@ -1,32 +1,30 @@
 var React = require('react');
 var StateData = require('./StateData');
 var {Combobox} = require('../../src');
-
 require('../../src/styles.css');
 
 var StateInput = React.createClass({
 
-  getOptionsForInput: function(inputValue, callback) {
-    if (inputValue === '') {
-      callback(StateData);
-      return;
-    }
-
-    // In a real-world scenario, you might defer to a remote server for 
-    // your autocompletion. The promise-based API makes it easy to do 
-    // asynchronous autocompletion.
-    
-    setTimeout(() => {
+  getOptionsForInput: function(inputValue) {
+    return new Promise((resolve, reject) => {
       var search = inputValue.toLowerCase();
+
+      if (search === '') {
+        resolve(StateData);
+        return;
+      }
+
+      // In a real-world scenario, you might defer to a remote server for 
+      // your autocompletion. The promise-based API makes it easy to do 
+      // asynchronous autocompletion.
       
-      callback(StateData.filter(function(state) {
-        // Allows you to match anything you want, not just the labels.
-        return (
+      window.setTimeout(() => {
+        resolve(StateData.filter((state) => (
           state.name.toLowerCase().indexOf(search) === 0 || 
           state.id.toLowerCase().indexOf(search) === 0
-        );
-      }));
-    }, 500);
+        )));
+      }, 500);
+    });
   },
 
   getLabelForOption: function(value) {
@@ -39,7 +37,6 @@ var StateInput = React.createClass({
         {...this.props}
         getOptionsForInput={this.getOptionsForInput}
         getLabelForOption={this.getLabelForOption}
-        renderOption={this.getLabelForOption}
       />
     );
   }
