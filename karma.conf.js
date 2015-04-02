@@ -31,7 +31,7 @@ module.exports = function(config) {
     },
 
     plugins: [
-      require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
       require('karma-mocha'),
       require('karma-webpack')
@@ -50,7 +50,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // start these browsers
-    browsers: ['Chrome'],
+    browsers: ['Firefox'],
 
     // Continuous Integration mode
     singleRun: process.env.CONTINUOUS_INTEGRATION || false
