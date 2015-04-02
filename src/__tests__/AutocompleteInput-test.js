@@ -60,14 +60,12 @@ describe('AutocompleteInput', function() {
     // Ensure that the text that we provided actually shows up in the input
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
     var inputNode = input.getDOMNode();
-
     expect(inputNode.value).toBe('hello');
 
     // Ensure that changes that we supply actually show up in the input
     Simulate.change(input, {target: {value: 'hello!'}});
     Simulate.keyDown(input, {key: '!'});
     Simulate.keyUp(input, {key: '!'});
-    
     expect(inputNode.value).toBe('hello!');
   });
 
@@ -79,24 +77,17 @@ describe('AutocompleteInput', function() {
     // Ensure that there's no typehead
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
     var inputNode = input.getDOMNode();
-
-    expect(input.getDOMNode().value).toBe('');
+    expect(inputNode.value).toBe('');
 
     // Ensure that the typeahead shows up case-insensitively and is selected
     Simulate.change(input, {target: {value: 'c'}});
     Simulate.keyDown(input, {key: 'c'});
     Simulate.keyUp(input, {key: 'c'});
-    
     expect(inputNode.value).toBe('california');
-    expect(inputNode.selectionStart).toBe(1);
-    expect(inputNode.selectionEnd).toBe(10);
 
     // Ensure that we can tab complete the value
     Simulate.blur(input);
-
     expect(inputNode.value).toBe('California');
-    expect(inputNode.selectionStart).toBe(10);
-    expect(inputNode.selectionEnd).toBe(10);
   });
 
   it('omits the typehead if the completion text does not match', function() {
@@ -110,17 +101,13 @@ describe('AutocompleteInput', function() {
     // Ensure that there's no typehead
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
     var inputNode = input.getDOMNode();
-
     expect(inputNode.value).toBe('h');
 
     // Ensure that there's still no typeahead
     Simulate.change(input, {target: {value: 'hi'}});
     Simulate.keyDown(input, {key: 'i'});
     Simulate.keyUp(input, {key: 'i'});
-
     expect(inputNode.value).toBe('hi');
-    expect(inputNode.selectionStart).toBe(2);
-    expect(inputNode.selectionEnd).toBe(2);
   });
 
 });
