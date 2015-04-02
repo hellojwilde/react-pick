@@ -8,13 +8,13 @@ var expect = require('expect');
 var emptyFunction = require('../helpers/emptyFunction');
 var getMockFunction = require('../helpers/getMockFunction');
 
-const KEY_DOWN = 40;
-const KEY_UP = 38;
+const KEY_ARROW_DOWN = 40;
+const KEY_ARROW_UP = 38;
 const KEY_RETURN = 13;
 const KEY_ESC = 27;
 
 describe('ListKeyBindings', function() {
-  it('requests first item on down if none selected', function() {
+  it('requests first item on KEY_ARROW_DOWN if none selected', function() {
     var onChangeMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
@@ -28,13 +28,13 @@ describe('ListKeyBindings', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    Simulate.keyDown(input, {keyCode: KEY_DOWN});
+    Simulate.keyDown(input, {keyCode: KEY_ARROW_DOWN});
 
     expect(onChangeMock.calls.length).toBe(1);
     expect(onChangeMock.calls[0]).toEqual([0]);
   });
 
-  it('requests next item on down', function() {
+  it('requests next item on KEY_ARROW_DOWN', function() {
     var onChangeMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
@@ -48,13 +48,13 @@ describe('ListKeyBindings', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    Simulate.keyDown(input, {keyCode: KEY_DOWN});
+    Simulate.keyDown(input, {keyCode: KEY_ARROW_DOWN});
 
     expect(onChangeMock.calls.length).toBe(1);
     expect(onChangeMock.calls[0]).toEqual([2]);
   });
 
-  it('requests last item on up if none selected', function() {
+  it('requests last item on KEY_ARROW_UP if none selected', function() {
     var onChangeMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
@@ -68,13 +68,13 @@ describe('ListKeyBindings', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    Simulate.keyDown(input, {keyCode: KEY_UP});
+    Simulate.keyDown(input, {keyCode: KEY_ARROW_UP});
 
     expect(onChangeMock.calls.length).toBe(1);
     expect(onChangeMock.calls[0]).toEqual([2]);
   });
 
-  it('requests previous item on up', function() {
+  it('requests previous item on KEY_ARROW_UP', function() {
     var onChangeMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
@@ -88,13 +88,13 @@ describe('ListKeyBindings', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    Simulate.keyDown(input, {keyCode: KEY_UP});
+    Simulate.keyDown(input, {keyCode: KEY_ARROW_UP});
 
     expect(onChangeMock.calls.length).toBe(1);
     expect(onChangeMock.calls[0]).toEqual([0]);
   });
 
-  it('completes current item on return', function() {
+  it('completes current item on KEY_RETURN', function() {
     var onCompleteMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
@@ -114,7 +114,7 @@ describe('ListKeyBindings', function() {
     expect(onCompleteMock.calls[0]).toEqual([2]);
   });
 
-  it('cancels on escape', function() {
+  it('cancels on KEY_ESC', function() {
     var onCancelMock = getMockFunction();
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 

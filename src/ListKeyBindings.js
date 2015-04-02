@@ -1,10 +1,10 @@
-var React = require('react/addons');
+  var React = require('react/addons');
 
 var {cloneWithProps} = React.addons;
 var emptyFunction = require('./helpers/emptyFunction');
 
-const KEY_DOWN = 40;
-const KEY_UP = 38;
+const KEY_ARROW_DOWN = 40;
+const KEY_ARROW_UP = 38;
 const KEY_RETURN = 13;
 const KEY_ESC = 27;
 
@@ -34,17 +34,26 @@ var ListKeyBindings = React.createClass({
 
   getKeyBindings: function() {
     return {
-      [KEY_DOWN]: this.changeNext,
-      [KEY_UP]: this.changePrevious,
-      [KEY_RETURN]: () => this.props.onComplete(this.props.focusedIndex),
+      [KEY_ARROW_DOWN]: this.changeNext,
+      [KEY_ARROW_UP]: this.changePrevious,
+      [KEY_RETURN]: this.complete,
       [KEY_ESC]: this.props.onCancel
     };
+  },
+
+  isCompletionPossible: function() {
+    return this.props.optionsLength > 0;
+  },
+
+  complete: function() {
+    var {focusedIndex, onComplete} = this.props;
+    this.isCompletionPossible() && onComplete(focusedIndex)
   },
 
   changeNext: function() {
     var {focusedIndex, optionsLength, onChange} = this.props;
 
-    optionsLength && onChange(
+    this.isCompletionPossible() && onChange(
       (focusedIndex === null) 
         ? 0 
         : Math.min(focusedIndex + 1, optionsLength - 1)
@@ -54,7 +63,7 @@ var ListKeyBindings = React.createClass({
   changePrevious: function() {
     var {focusedIndex, optionsLength, onChange} = this.props;
 
-    optionsLength && this.props.onChange(
+    this.isCompletionPossible() && this.props.onChange(
       (focusedIndex === null) 
         ? optionsLength - 1
         : Math.max(0, focusedIndex - 1)
