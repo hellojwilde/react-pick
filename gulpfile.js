@@ -19,7 +19,7 @@ gulp.task('build-node-css', function() {
 
 gulp.task('build-node', ['build-node-js', 'build-node-css']);
 
-gulp.task('build-examples', ['build-node'], function() {
+gulp.task('build-examples', function() {
   return gulp.src('examples/')
     .pipe(webpack(examplesWebpackConfig))
     .pipe(gulp.dest('examples/build/'));

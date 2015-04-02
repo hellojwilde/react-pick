@@ -1,6 +1,6 @@
 var React = require('react/addons');
 
-var {cloneWithProps} = React.addons;
+var {PureRenderMixin, cloneWithProps} = React.addons;
 
 var joinClasses = require('react/lib/joinClasses');
 var getUniqueId = require('./helpers/getUniqueId');
@@ -10,6 +10,8 @@ var getUniqueId = require('./helpers/getUniqueId');
  * to an <input> element in an WAI ARIA compliant manner.
  */
 var InputPopupWrapper = React.createClass({
+
+  mixins: [PureRenderMixin],
 
   propTypes: {
     isOpen: React.PropTypes.bool,

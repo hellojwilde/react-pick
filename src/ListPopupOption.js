@@ -1,4 +1,6 @@
-var React = require('react');
+var React = require('react/addons');
+
+var {PureRenderMixin} = React.addons;
 
 var joinClasses = require('react/lib/joinClasses');
 
@@ -10,6 +12,8 @@ var joinClasses = require('react/lib/joinClasses');
  * as determined by the `getLabelForOption` function.
  */
 var ListPopupOption = React.createClass({
+
+  mixins: [PureRenderMixin],
 
   propTypes: {
     getLabelForOption: React.PropTypes.func.isRequired,

@@ -1,6 +1,7 @@
 var ListPopupOption = require('./ListPopupOption');
-var TimeoutMixin = require('./helpers/TimeoutMixin');
-var React = require('react');
+var React = require('react/addons');
+
+var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
 var getUniqueId = require('./helpers/getUniqueId');
@@ -11,53 +12,29 @@ var joinClasses = require('react/lib/joinClasses');
  */
 var ListPopup = React.createClass({
 
-  mixins: [TimeoutMixin],
+  mixins: [PureRenderMixin],
 
   propTypes: {
     getLabelForOption: React.PropTypes.func.isRequired,
-    focusedIndex: React.PropTypes.number,
-    onBlur: React.PropTypes.func,
     onChange: React.PropTypes.func,
     onComplete: React.PropTypes.func,
-    onFocus: React.PropTypes.func,
-    optionComponent: React.PropTypes.component,
+    optionComponent: React.PropTypes.func,
+    optionIndex: React.PropTypes.number,
     options: React.PropTypes.array
   },
 
   getDefaultProps: function() {
     return {
-      focusedIndex: null,
-      onBlur: emptyFunction,
       onChange: emptyFunction,
       onComplete: emptyFunction,
-      onFocus: emptyFunction,
       optionComponent: ListPopupOption,
+      optionIndex: null,
       options: []
     };
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-    if (this.props.focusedIndex !== prevProps.focusedIndex &&
-        this.props.focusedIndex !== null) {
-      this.refs[this.props.focusedIndex].getDOMNode().focus();
-      prevProps.focusedIndex || this.props.onFocus();
-    }
-  },
-
   handleOptionMouseEnter: function(idx, event) {
     this.props.onChange(idx);
-  },
-
-  handleOptionFocus: function(idx, event) {
-    this.clearTimeout(this.blurTimeoutId);
-    this.props.onChange(idx);
-  },
-
-  handleOptionBlur: function(idx, event) {
-    this.blurTimeoutId = this.setTimeout(() => {
-      this.props.onChange(null);
-      this.props.onBlur();
-    }, 0);
   },
 
   handleOptionClick: function(idx, event) {
@@ -67,9 +44,12 @@ var ListPopup = React.createClass({
   render: function() {
     var OptionComponent = this.props.optionComponent;
     var {
-      className, 
-      options, 
+      className,
+      optionIndex, 
+      options,
       getLabelForOption, 
+      onChange,
+      onComplete,
       ...otherProps
     } = this.props;
 
@@ -81,15 +61,15 @@ var ListPopup = React.createClass({
         {options.map((option, idx) => {
           return (
             <OptionComponent
-              className="ListPopup-option"
+              className={joinClasses(
+                'ListPopup-option', 
+                (idx === optionIndex) && 'ListPopup-option--isFocused'
+              )}
               getLabelForOption={getLabelForOption}
               key={idx}
-              onBlur={this.handleOptionBlur.bind(this, idx)}
               onClick={this.handleOptionClick.bind(this, idx)}
-              onFocus={this.handleOptionFocus.bind(this, idx)}
               onMouseEnter={this.handleOptionMouseEnter.bind(this, idx)}
               option={option}
-              ref={idx}
               role="listitem"
             />
           );
@@ -100,4 +80,4 @@ var ListPopup = React.createClass({
 
 });
 
-module.exports = ListInput;
+module.exports = ListPopup;

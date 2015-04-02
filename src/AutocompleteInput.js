@@ -1,4 +1,6 @@
-var React = require('react');
+var React = require('react/addons');
+
+var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
 
@@ -41,6 +43,8 @@ function getCompletionTypeahead(value, completionValue) {
  */
 var AutocompleteInput = React.createClass({
 
+  mixins: [PureRenderMixin],
+
   propTypes: {
     completionValue: React.PropTypes.string,
     onComplete: React.PropTypes.func,
@@ -50,9 +54,18 @@ var AutocompleteInput = React.createClass({
   getDefaultProps: function() {
     return {
       completionValue: null,
+      onBlur: emptyFunction,
+      onKeyDown: emptyFunction,
+      onKeyUp: emptyFunction,
       onComplete: emptyFunction,
       value: null
     };
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    if (this.props.completionValue !== prevProps.completionValue) {
+      this.updateCompletionTypeahead();
+    }
   },
 
   /**
@@ -106,14 +119,17 @@ var AutocompleteInput = React.createClass({
 
   handleBlur: function(event) {
     this.complete();
+    this.props.onBlur(event);
   },
 
   handleKeyDown: function(event) {
     this.isTypingForward = event.keyCode !== KEY_BACKSPACE;
+    this.props.onKeyDown(event);
   },
 
   handleKeyUp: function(event) {
     this.updateCompletionTypeahead();
+    this.props.onKeyUp(event);
   },
 
   render: function() {

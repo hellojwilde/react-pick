@@ -1,7 +1,13 @@
+var AutocompleteInput = require('./AutocompleteInput');
 var Combobox = require('./Combobox');
-var TypeaheadInput = require('./TypeaheadInput');
+var InputPopupWrapper = require('./InputPopupWrapper');
+var ListPopup = require('./ListPopup');
+var ListPopupOption = require('./ListPopupOption');
 
 module.exports = {
+  AutocompleteInput,
   Combobox,
-  TypeaheadInput
+  InputPopupWrapper,
+  ListPopup,
+  ListPopupOption
 };

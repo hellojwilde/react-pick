@@ -19,7 +19,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={null} 
+        optionIndex={null} 
         onCancel={emptyFunction}
         onChange={onChangeMock}
         onComplete={emptyFunction}>
@@ -39,7 +39,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={1} 
+        optionIndex={1} 
         onCancel={emptyFunction}
         onChange={onChangeMock}
         onComplete={emptyFunction}>
@@ -59,7 +59,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={null} 
+        optionIndex={null} 
         onCancel={emptyFunction}
         onChange={onChangeMock}
         onComplete={emptyFunction}>
@@ -79,7 +79,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={1} 
+        optionIndex={1} 
         onCancel={emptyFunction}
         onChange={onChangeMock}
         onComplete={emptyFunction}>
@@ -99,7 +99,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={2} 
+        optionIndex={2} 
         onCancel={emptyFunction}
         onChange={emptyFunction}
         onComplete={onCompleteMock}>
@@ -119,7 +119,7 @@ describe('ListKeyBindings', function() {
     var ctx = TestUtils.renderIntoDocument(
       <ListKeyBindings 
         optionsLength={3} 
-        focusedIndex={2} 
+        optionIndex={2} 
         onCancel={onCancelMock}
         onChange={emptyFunction}
         onComplete={emptyFunction}>
