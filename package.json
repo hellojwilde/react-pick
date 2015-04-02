@@ -39,6 +39,7 @@
   },
   "keywords": [
     "react",
+    "react-component",
     "autocomplete",
     "typeahead",
     "combobox",

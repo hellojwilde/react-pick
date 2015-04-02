@@ -53,6 +53,6 @@ module.exports = function(config) {
     browsers: ['Chrome'],
 
     // Continuous Integration mode
-    singleRun: false
+    singleRun: process.env.CONTINUOUS_INTEGRATION || false
   });
 };
