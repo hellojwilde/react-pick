@@ -109,11 +109,6 @@ var AutocompleteInput = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    if (event.keyCode === KEY_RETURN && this.isCompletionPossible()) {
-      event.preventDefault();
-      this.complete();
-    }
-
     this.isTypingForward = event.keyCode !== KEY_BACKSPACE;
   },
 

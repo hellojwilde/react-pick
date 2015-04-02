@@ -7,7 +7,6 @@ var {Simulate} = React.addons.TestUtils;
 var expect = require('expect');
 var emptyFunction = require('../helpers/emptyFunction');
 
-const KEY_RETURN = 13;
 const KEY_BACKSPACE = 8;
 
 var AutocompleteInputTestWrapper = React.createClass({
@@ -93,7 +92,7 @@ describe('AutocompleteInput', function() {
     expect(inputNode.selectionEnd).toBe(10);
 
     // Ensure that we can tab complete the value
-    Simulate.keyDown(input, {keyCode: KEY_RETURN});
+    Simulate.blur(input);
 
     expect(inputNode.value).toBe('California');
     expect(inputNode.selectionStart).toBe(10);

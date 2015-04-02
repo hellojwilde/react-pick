@@ -9,7 +9,11 @@ const KEY_RETURN = 13;
 const KEY_ESC = 27;
 
 /**
- * <ListKeyBindings> is a component 
+ * <ListKeyBindings> represents the types of key behavior that should be used
+ * to navigate between the different sequential items in <ListPopup>.
+ *
+ * This is a separate wrapper component because we also want to apply these
+ * same sorts of key bindings to the <input> in the <Combobox> widget.
  */
 var ListKeyBindings = React.createClass({
 
