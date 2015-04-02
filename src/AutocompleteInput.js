@@ -3,7 +3,6 @@ var React = require('react');
 var emptyFunction = require('./helpers/emptyFunction');
 
 const KEY_RETURN = 13;
-const KEY_TAB = 9;
 const KEY_BACKSPACE = 8;
 
 function getCompletionTypeahead(value, completionValue) {
@@ -24,7 +23,7 @@ function getCompletionTypeahead(value, completionValue) {
 }
 
 /**
- * <AutocompleteInput> are a lightweight wrapper around <input>, enabling
+ * <AutocompleteInput> is a lightweight wrapper around <input>, enabling
  * a UI to show text "typed ahead" of the user's current input. This is useful
  * for displaying a prediction about what the user is going to type next.
  *
@@ -110,12 +109,7 @@ var AutocompleteInput = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    var isCompletionKey = (
-      event.keyCode === KEY_RETURN || 
-      event.keyCode === KEY_TAB
-    );
-
-    if (isCompletionKey && this.isCompletionPossible()) {
+    if (event.keyCode === KEY_RETURN && this.isCompletionPossible()) {
       event.preventDefault();
       this.complete();
     }
