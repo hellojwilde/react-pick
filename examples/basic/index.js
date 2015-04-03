@@ -7,8 +7,8 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       value: {
-        inputValue: '',
-        selectedValue: null
+        inputValue: 'California',
+        selectedValue: {id: 'CA', name: 'California'}
       }
     };
   },
@@ -22,6 +22,8 @@ var App = React.createClass({
   },
 
   render: function() {
+    var {selectedValue} = this.state.value;
+
     return (
       <div>
         <h1>react-pick</h1>
@@ -31,7 +33,7 @@ var App = React.createClass({
             Demo Source
           </a>
         </p>
-        <p>Selected State: {this.state.value.selectedValue}</p>
+        <p>Selected State: {selectedValue && selectedValue.id}</p>
         <StateInput 
           value={this.state.value} 
           onChange={this.handleChange}

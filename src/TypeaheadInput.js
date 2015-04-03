@@ -7,12 +7,12 @@ var emptyFunction = require('./helpers/emptyFunction');
 const KEY_BACKSPACE = 8;
 
 function getCompletionTypeahead(value, typeaheadValue) {
-  value = (value || '').toLowerCase();
-  typeaheadValue = (typeaheadValue || '').toLowerCase();
+  var normalizedValue = (value || '').toLowerCase();
+  var normalizedTypeaheadValue = (typeaheadValue || '').toLowerCase();
 
-  if (value === '' || value === typeaheadValue) {
+  if (normalizedValue === '' || normalizedValue === normalizedTypeaheadValue) {
     return null;
-  } else if (typeaheadValue.indexOf(value) !== 0) {
+  } else if (normalizedTypeaheadValue.indexOf(normalizedValue) !== 0) {
     return null;
   } else {
     var start = value.length;
