@@ -54,7 +54,7 @@ module.exports = function(config) {
 
     // make it work on Travis CI; based on:
     // <https://github.com/rackt/react-router/blob/master/karma.conf.js>
-    browserNoActivityTimeout: 30000,
+    browserNoActivityTimeout: 90000,
     singleRun: process.env.CONTINUOUS_INTEGRATION === 'true'
   });
 };
