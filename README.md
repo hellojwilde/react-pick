@@ -8,8 +8,8 @@ Intially derived from Ryan Florence's awesome [react-autocomplete](https://githu
 
 ## Demos
 
- - Pick a US state: http://jwilde.me/react-pick/basic/
- - Pick a set of Flickr images: http://jwilde.me/react-pick/flickr/
+ - Pick a US state: [http://jwilde.me/react-pick/basic/](http://jwilde.me/react-pick/basic/)
+ - Pick a set of Flickr images: [http://jwilde.me/react-pick/flickr/](http://jwilde.me/react-pick/flickr/)
 
 ## Installation & Usage
 
@@ -21,14 +21,14 @@ You'll need to make sure you're including the `styles.css` file in the root of t
 
 For out-of-the-box usage:
 
-- `<Combobox>` - Supports find displaying asynchronous autocomplete suggestions inline as "type ahead" text, and as a popup menu.
+- [`<Combobox>`](https://github.com/hellojwilde/react-pick/blob/master/src/Combobox.js) - Supports find displaying asynchronous autocomplete suggestions inline as "type ahead" text, and as a popup menu.
 
 For customizing `<Combobox>` and creating your own components:
 
-- `<TypeaheadInput>` - An `<input>` that robustly inserts "type ahead" text beyond the user's input.
-- `<InputPopupWrapper>` - Attaches a popup to an `<input>`.
-- `<ListPopup>` - A popup for rendering a list of possible completion options.
-- `<ListPopupOption>` - The default component for rendering options in `<ListPopup>`.
+- [`<TypeaheadInput>`](https://github.com/hellojwilde/react-pick/blob/master/src/TypeaheadInput.js) - An `<input>` that robustly inserts "type ahead" text beyond the user's input.
+- [`<InputPopupWrapper>`](https://github.com/hellojwilde/react-pick/blob/master/src/InputPopupWrapper.js) - Attaches a popup to an `<input>`.
+- [`<ListPopup>`](https://github.com/hellojwilde/react-pick/blob/master/src/ListPopup.js) - A popup for rendering a list of possible completion options.
+- [`<ListPopupOption>`](https://github.com/hellojwilde/react-pick/blob/master/src/ListPopupOption.js) - The default component for rendering options in `<ListPopup>`.
 
 ### How do you use `<Combobox>`?
 
