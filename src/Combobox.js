@@ -1,29 +1,42 @@
-var ComboboxKeyBindings = require('./ComboboxKeyBindings');
-var PopupList = require('./PopupList');
-var PopupListEmpty = require('./PopupListEmpty');
-var PopupListFetching = require('./PopupListFetching');
-var React = require('react');
+var InputPopupWrapper = require('./InputPopupWrapper');
+var ListKeyBindings = require('./ListKeyBindings');
+var ListPopup = require('./ListPopup');
+var React = require('react/addons');
 var TypeaheadInput = require('./TypeaheadInput');
 
-var assign = require('object-assign');
+var {PureRenderMixin} = React.addons;
+
 var emptyFunction = require('./helpers/emptyFunction');
-var getARIADescendantId = require('./helpers/getARIADescendantId');
-var getLabelForOption = require('./defaults/getLabelForOption');
-var joinClasses = require('react/lib/joinClasses');
+var getUniqueId = require('./helpers/getUniqueId');
 
-var guid = 0;
-
+/**
+ * <Combobox> is a combobox-style widget that supports both inline- and 
+ * menu-based autocompletion based on an asynchonously-loaded result set.
+ */
 var Combobox = React.createClass({
+
+  mixins: [PureRenderMixin],
 
   propTypes: {
     /**
-     * The current content value of the combobox:
-     *  - `inputValue` is the text shown in the input of the combobox. 
-     *    Defaults to ''.
-     *  - `selectedValue` is the selected autocompletion value in the combobox.
-     *    Defaults to null when nothing is selected.
-     * @type {object}
-     * @required
+     * A function that fetches the autocomplete options for typed user input.
+     * It takes the `value` of the <input>, and returns a promise that resolves
+     * with an array of autocomplete options.
+     */
+    getOptionsForInputValue: React.PropTypes.func.isRequired,
+
+    /**
+     * Event handler fired when the `value` of the component changes.
+     * Function called is passed `value`.
+     */
+    onChange: React.PropTypes.func.isRequired,
+
+    /**
+     * An object for the current value of the <Combobox> with two properties:
+     *   - `inputValue`, the text that the user entered into the <Combobox>
+     *     or was autocompleted as label for the selected value.
+     *   - `selectedValue`, the value from the autocomplete options that the 
+     *     user selected.
      */
     value: React.PropTypes.shape({
       inputValue: React.PropTypes.string,
@@ -31,227 +44,176 @@ var Combobox = React.createClass({
     }).isRequired,
 
     /**
-     * Handler fired whenever the `value` changes with the updated value object.
-     * @type {function}
-     * @required
-     */
-    onChange: React.PropTypes.func.isRequired,
-
-    /**
-     * For a given input string typed by the user, calls a callback when
-     * new autocompletion results are available.
-     * @type {function}
-     * @required
-     */
-    getOptionsForInput: React.PropTypes.func.isRequired,
-
-    /**
-     * The autocompletion behavior:
-     *  - `inline` autocompletes the first matched value into the text box,
-     *  - `list` displays a list of choices,
-     *  - `both` displays both.
+     * The type of autocompletion behavior:
+     *   - `menu` to display a popup menu with autocompletion options.
+     *   - `inline` to display the first autocompletion option as text 
+     *      "typed ahead" of the user's input.
+     *   - `both` to display both at once.
      * Default is `both`.
-     * @type {string}
      */
-    autocomplete: React.PropTypes.oneOf(['both', 'inline', 'list']),
+    autocomplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
 
     /**
-     * For a given autocomplete value, returns the contents that should be
-     * rendered in the popup list. Default is the value coerced to a string.
-     * @type {function}
+     * Event handler fired when `value.selectedValue` changes to a new 
+     * non-`null` value. Function called is passed `value.selectedValue`.
      */
-    renderOption: React.PropTypes.func,
+    onSelect: React.PropTypes.func,
 
     /**
-     * For a given input value and autocomplete value label, returns the 
-     * selection range (an object containing `start` and `end` indexes)
-     * that should be selected.
-     * @type {function}
-     */
-    getLabelSelectionRange: React.PropTypes.func,
-
-    /**
-     * For a given autocomplete value, returns the text that should be shown
-     * in the input textbox of the autocomplete. Default is the value coerced
-     * to a string.
-     * @type {function}
+     * Function that takes an `option` value, and returns a string label.
+     * Default is a function that coerces the `option` to a string.
      */
     getLabelForOption: React.PropTypes.func,
 
     /**
-     * Handler fired whenever the user selects a given option.
-     * @type {function}
+     * The component to render for the popup.
+     * Default is `ListPopup`.
      */
-    onSelect: React.PropTypes.func
+    popupComponent: React.PropTypes.func
   },
 
   getDefaultProps: function() {
     return {
       autocomplete: 'both',
-      getLabelForOption: getLabelForOption,
-      value: {inputValue: '', selectedValue: null},
-      onSelect: emptyFunction
+      onSelect: emptyFunction,
+      getLabelForOption: (option) => option+'',
+      popupComponent: ListPopup
     };
   },
 
   getInitialState: function() {
     return {
+      id: getUniqueId('Combobox'),
       isOpen: false,
-      isFetching: false,
-      optionInline: null,
-      optionIndex: null,
       options: [],
-      popupId: 'Combobox-list-'+(++guid)
+      optionIndex: null
     };
   },
 
-  fetchListOptions: function(inputValue, callback) {
-    this.setState({isFetching: true});
-    this.props.getOptionsForInput(
-      inputValue, 
-      (options) => this.setState({
-        isFetching: false,
-        options: options
-      }, callback)
-    );
-  },
-
-  isShowingMenu: function() {
-    return ['list', 'both'].indexOf(this.props.autocomplete) !== -1;
-  },
-
-  isShowingInline: function() {
+  isInlineCompleting: function() {
     return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
   },
 
-  handleRequestChange: function(inputValue) {
-    this.setState({
-      isOpen: this.isShowingMenu(),
-      optionInline: null,
-      optionIndex: null
-    });
+  getDescendantIdForOption: function(idx) {
+    return (idx !== null) ? `${this.state.id}-${idx}` : null;
+  },
 
+  getMenuIsOpen: function() {
+    var isMenuCompleting =
+      ['menu', 'both'].indexOf(this.props.autocomplete) !== -1;
+
+    return this.state.isOpen && isMenuCompleting;
+  },
+
+  getInputTypeaheadValue: function() {
+    var {options, optionIndex} = this.state;
+    
+    if (!this.isInlineCompleting() || optionIndex === null) {
+      return null;
+    }
+
+    return this.props.getLabelForOption(options[optionIndex]);
+  },
+
+  updateOptionsForInputValue: function(inputValue) {
+    var optionsPromise = this.optionsPromise =
+      this.props.getOptionsForInputValue(inputValue);
+    
+    optionsPromise.then((options) => {
+      // It's possible that when we're fetching, we may get out-of-order
+      // promise resolutions, even for cases like a contrived setTimeout demo.
+      // This leads to really wonky behavior.
+      // 
+      // Ensure that we only update the state based on the most recent promise
+      // that was started for fetching.
+    
+      if (this.optionsPromise !== optionsPromise) {
+        return;
+      }
+
+      this.setState({
+        isOpen: options.length > 0,
+        options: options,
+        optionIndex: (this.isInlineCompleting() && options.length) ? 0 : null
+      });
+    });
+  },
+
+  handleInputChange: function(event) {
+    var inputValue = event.target.value;
+
+    this.setState({optionIndex: null});
+    this.updateOptionsForInputValue(inputValue);
     this.props.onChange({
       inputValue: inputValue,
       selectedValue: null
     });
-
-    this.fetchListOptions(inputValue, () => {
-      if (this.state.options.length == 0 || !this.isShowingInline()) {
-        return;
-      }
-      this.setState({optionInline: this.state.options[0]});
-    });
   },
 
-  handleRequestClose: function() {
-    this.setState({isOpen: false});
-  },
-
-  handleRequestSelect: function(isFromOptions, selectedValue) {
-    // XXX This is a hack to ensure that we don't close the popup if we're
-    // somehow triggering a selection as we're moving into the popup.
-
-    if (!isFromOptions && this.state.optionIndex != null) {
-      return;
-    }
-
-    this.props.onSelect(selectedValue);
-    this.props.onChange({
-      inputValue: this.props.getLabelForOption(selectedValue),
-      selectedValue: selectedValue
-    });
-
-    this.setState({isOpen: false});
-  },
-
-  handleRequestFocus: function(optionIndex) {
+  handleListChange: function(optionIndex) {
     this.setState({optionIndex});
   },
 
-  handleRequestFocusNext: function() {
-    var currentIndex = this.state.optionIndex;
-    var lastIndex = this.state.options.length - 1;
+  handleComplete: function() {
+    this.setState({isOpen: false});
 
-    this.handleRequestFocus(
-      (currentIndex == null || currentIndex >= lastIndex)
-        ? 0 : currentIndex + 1
-    );
+    if (this.state.optionIndex !== null) {
+      var option = this.state.options[this.state.optionIndex];
+
+      this.setState({optionIndex: null});
+      this.props.onSelect(option);
+      this.props.onChange({
+        inputValue: this.props.getLabelForOption(option),
+        selectedValue: option
+      });
+    }
   },
 
-  handleRequestFocusPrevious: function() {
-    var currentIndex = this.state.optionIndex;
-    var lastIndex = this.state.options.length - 1;
-
-    this.handleRequestFocus(
-      (currentIndex == null || currentIndex <= 0)
-        ? lastIndex : currentIndex - 1
-    );
+  handleCancel: function() {
+    this.setState({optionIndex: null, isOpen: false});
   },
 
-  renderPopupContent: function() {
-    if (this.state.isFetching) {
-      return <PopupListFetching/>;
-    }
-
-    if (this.state.options.length == 0) {
-      return <PopupListEmpty/>;
-    }
+  renderPopup: function() {
+    var PopupComponent = this.props.popupComponent;
 
     return (
-      <PopupList
-        aria-expanded={this.state.isOpen+''}
-        getLabelForOption={this.props.getLabelForOption}
-        renderOption={this.props.renderOption}
-        id={this.state.popupId}
-        inputValue={this.props.value.inputValue}
-        onRequestClose={this.handleRequestClose}
-        onRequestFocus={this.handleRequestFocus}
-        onRequestFocusNext={this.handleRequestFocusNext}
-        onRequestFocusPrevious={this.handleRequestFocusPrevious}
-        onRequestSelect={this.handleRequestSelect.bind(this, true)}
-        optionIndex={this.state.optionIndex}
+      <PopupComponent 
         options={this.state.options}
-        role="listbox"
+        optionIndex={this.state.optionIndex}
+        onChange={this.handleListChange}
+        onComplete={this.handleComplete}
+        getLabelForOption={this.props.getLabelForOption}
+        getDescendantIdForOption={this.getDescendantIdForOption}
       />
-    );
+    ); 
   },
 
   render: function() {
-    var {value, className, ...otherProps} = this.props;
+    var {isOpen, optionIndex, options} = this.state;
 
     return (
-      <div className={joinClasses('Combobox', className)}>
-        <ComboboxKeyBindings
-          onRequestClose={this.handleRequestClose}
-          onRequestFocusNext={this.handleRequestFocusNext}
-          onRequestFocusPrevious={this.handleRequestFocusPrevious}>
+      <InputPopupWrapper 
+        isOpen={this.getMenuIsOpen()} 
+        popupElement={this.renderPopup()}>
+        <ListKeyBindings 
+          optionsLength={options.length}
+          optionIndex={optionIndex}
+          onChange={this.handleListChange}
+          onComplete={this.handleComplete}
+          onCancel={this.handleCancel}>
           <TypeaheadInput
-            {...otherProps}
-            aria-activedescendant={getARIADescendantId(
-              this.state.popupId,
-              this.state.optionIndex
-            )}
+            aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
             aria-autocomplete={this.props.autocomplete}
-            aria-owns={this.state.popupId}
-            className="Combobox-input"
-            value={value.inputValue}
-            option={this.state.optionInline}
-            onChange={this.handleRequestChange}
-            onSelect={this.handleRequestSelect.bind(this, false)}
-            role="combobox"
+            typeaheadValue={this.getInputTypeaheadValue()}
+            value={this.props.value.inputValue}
+            onChange={this.handleInputChange}
+            onBlur={this.handleComplete}
           />
-        </ComboboxKeyBindings>
-        <div className={joinClasses(
-          'Combobox-popup',
-          this.state.isOpen && 'Combobox-popup--is-open'
-        )}>
-          {this.renderPopupContent()}
-        </div>
-      </div>
+        </ListKeyBindings>
+      </InputPopupWrapper>
     );
   }
+
 });
 
 module.exports = Combobox;
-

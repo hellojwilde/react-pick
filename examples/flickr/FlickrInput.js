@@ -1,39 +1,65 @@
 var React = require('react');
-var {Combobox} = require('../../src');
+var {Combobox, ListPopup, ListPopupOption} = require('../../src');
 
 require('../../src/styles.css');
 
-var throttle = require('./throttle');
+var debounce = require('es6-promise-debounce')(Promise);
 
 const FLICKR_URL = 
   'http://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
 
+var FlickrInputPopupOption = React.createClass({
+
+  propTypes: {
+    option: React.PropTypes.object
+  },
+
+  render: function() {
+    var {option, ...otherProps} = this.props;
+
+    return (
+      <div {...otherProps}>
+        <img src={option.media.m} height="50" />
+      </div>
+    );
+  }
+
+});
+
+var FlickrInputPopup = React.createClass({
+
+  render: function() {
+
+    return (
+      <ListPopup 
+        {...this.props} 
+        optionComponent={FlickrInputPopupOption}
+      />
+    );
+  }
+
+});
+
 var FlickrInput = React.createClass({
 
-  getOptionsForInput: throttle(500, function(inputValue, callback) {
-    $.getJSON(
-      FLICKR_URL, 
-      {tags: inputValue, format: 'json'},
-      (results) => callback(results.items)
-    );
-  }),
-
-  getLabelForOption: function(option) {
-    return '';
-  },
-
-  renderOption: function(option) {
-    return <img src={option.media.m} height="50" />;
-  },
+  getOptionsForInputValue: debounce(function(inputValue) {
+    return new Promise(function(resolve, reject) {
+      $.getJSON(
+        FLICKR_URL, 
+        {tags: inputValue, format: 'json'},
+        (results) => resolve(results.items)
+      );
+    });
+  }, 500),
 
   render: function() {
     return (
       <Combobox
         {...this.props}
-        autocomplete="list"
-        getOptionsForInput={this.getOptionsForInput}
-        getLabelForOption={this.getLabelForOption}
-        renderOption={this.renderOption}
+        autocomplete="menu"
+        getOptionsForInputValue={this.getOptionsForInputValue}
+        getLabelForOption={() => ''}
+        popupComponent={FlickrInputPopup}
       />
     );
   }

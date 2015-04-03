@@ -25,8 +25,6 @@ gulp.task('build-examples', function() {
     .pipe(gulp.dest('examples/build/'));
 });
 
-gulp.task('build', ['build-node', 'build-examples']);
-
 gulp.task('deploy', ['build-examples'], function() {
   return gulp.src('./examples/**/*')
     .pipe(ghPages());

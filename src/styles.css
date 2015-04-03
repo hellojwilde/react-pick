@@ -1,16 +1,16 @@
-.Combobox {
+.InputPopupWrapper {
   display: inline-block;
   position: relative;
 }
 
-.Combobox-input {
+.InputPopupWrapper-input {
   width: 100%;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.Combobox-popup {
+.InputPopupWrapper-popup {
   display: none;
   position: absolute;
   z-index: 1;
@@ -28,24 +28,18 @@
   box-sizing: border-box;
 }
 
-.Combobox-popup--is-open {
+.InputPopupWrapper-popup--isOpen {
   display: block;
 }
 
-.PopupListOption:focus {
-  outline: 0;
-  color: white;
-  background: hsl(200, 50%, 50%);
-}
-
-.PopupListOption {
+.ListPopup-option {
   display: block;
   padding: 2px 16px;
   cursor: default;
 }
 
-.PopupListOption--isSelected:before {
-  content: '✓';
-  position: absolute;
-  left: 4px;
+.ListPopup-option--isFocused {
+  outline: 0;
+  color: white;
+  background: hsl(200, 50%, 50%);
 }

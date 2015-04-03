@@ -1,91 +1,117 @@
-var React = require('react');
+var React = require('react/addons');
+
+var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
-var getLabelForOption = require('./defaults/getLabelForOption');
-var getLabelSelectionRange = require('./defaults/getLabelSelectionRange');
 
+const KEY_BACKSPACE = 8;
+
+function getCompletionTypeahead(value, typeaheadValue) {
+  value = (value || '').toLowerCase();
+  typeaheadValue = (typeaheadValue || '').toLowerCase();
+
+  if (value === '' || value === typeaheadValue) {
+    return null;
+  } else if (typeaheadValue.indexOf(value) !== 0) {
+    return null;
+  } else {
+    var start = value.length;
+    var end = typeaheadValue.length;
+    var valueWithTypeahead = value + typeaheadValue.slice(start, end);
+
+    return {valueWithTypeahead, start, end};
+  }
+}
+
+/**
+ * <TypeaheadInput> is a lightweight wrapper around <input>, enabling
+ * a UI to show text "typed ahead" of the user's current input. This is useful
+ * for displaying a prediction about what the user is going to type next.
+ *
+ * To use the component, in addition to the properties you supply normally,
+ * you supply `typeaheadValue`, the full string you want to have typed ahead.
+ * For example, if the user typed "calif", and you wanted to suggest 
+ * "California", you would supply "California" as the `typeaheadValue` as usual:
+ *
+ *    <TypeaheadInput value="calif" typeaheadValue="California"/>
+ *
+ * The value will be inserted into the underlying <input> as the user types.
+ * The text beyond what the user typed will be selected so that they can type
+ * over it. If the user types text that doesn't match "California", no value 
+ * will be completed.
+ * 
+ * This component attempts to conform to WAI-ARIA's autocomplete requirements:
+ * <http://www.w3.org/TR/wai-aria/states_and_properties#aria-autocomplete>.
+ */
 var TypeaheadInput = React.createClass({
 
+  mixins: [PureRenderMixin],
+
   propTypes: {
-    getLabelForOption: React.PropTypes.func,
-    getLabelSelectionRange: React.PropTypes.func,
-    onChange: React.PropTypes.func,
-    onSelect: React.PropTypes.func,
-    option: React.PropTypes.any,
+    /**
+     * The value that to type over and ahead of the user's current input.
+     * This is the value that you're suggesting to the user.
+     */
+    typeaheadValue: React.PropTypes.string,
+
+    /**
+     * The value that the user intended to type into the textbox.
+     * Semantically identical to the property with the same name on <input>.
+     */
     value: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
-      getLabelForOption: getLabelForOption,
-      getLabelSelectionRange: getLabelSelectionRange,
-      onChange: emptyFunction,
-      onSelect: emptyFunction,
-      option: null,
-      value: ''
+      typeaheadValue: null,
+      onKeyUp: emptyFunction,
+      value: null
     };
-  },
-
-  getInitialState: function() {
-    return {
-      isTypingForward: false
-    };
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    var inputLength = this.props.value.length;
-    var nextInputLength = nextProps.value.length;
-
-    if (inputLength !== nextInputLength) {
-      this.setState({isTypingForward: nextInputLength > inputLength});
-    }
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    // We only want to autocomplete when we have an option to complete in the 
+    if (this.props.typeaheadValue !== prevProps.typeaheadValue) {
+      this.updateTypeahead();
+    }
+  },
+
+  /**
+   * If there is a possible typeahead, mutates the DOM <input> node to have the
+   * typeahead text and selects the range beyond what the user typed.
+   */
+  updateTypeahead: function() {
+    // We only want to typeahead when we have an option to complete in the 
     // textbox, and when the user is actively typing content into the textbox.
     // Typing ahead when deleting text feels annoying.
-
-    if (this.props.option == null || !this.state.isTypingForward) {
+  
+    if (this.props.typeaheadValue === null || 
+        this.isTypingForward !== true) {
       return;
     }
 
-    // Provided that we have an autocomplete option, and we're not currently
-    // trying getting rid of text from the box, inset a possible option
-    // result and highlight the part that was inserted.
-
     var input = this.refs['input'].getDOMNode();
-    var {value, option} = this.props;
-    var label = this.props.getLabelForOption(option);
-    var range = this.props.getLabelSelectionRange(value, label);
+    var {value, typeaheadValue} = this.props;
+    var typeahead = getCompletionTypeahead(value, typeaheadValue);
 
-    if (range) {
-      input.value = label;
-      input.setSelectionRange(range.start, range.end);
+    if (typeahead !== null) {
+      input.value = typeahead.valueWithTypeahead;
+      input.setSelectionRange(typeahead.start, typeahead.end);
     }
   },
 
-  select: function() {
-    this.props.option && this.props.onSelect(this.props.option);
-  },
-
-  handleChange: function(event) {
-    this.props.onChange(event.target.value);
-  },
-
-  handleBlur: function() {
-    this.select();
+  handleKeyUp: function(event) {
+    this.isTypingForward = event.keyCode !== KEY_BACKSPACE;
+    this.updateTypeahead();
+    this.props.onKeyUp(event);
   },
 
   render: function() {
-    var {onChange, onSelect, ...otherProps} = this.props;
-
     return (
       <input
-        {...otherProps}
+        {...this.props}
+        aria-autocomplete={this.props['aria-autocomplete'] || 'inline'}
         ref="input"
-        onChange={this.handleChange}
-        onBlur={this.handleBlur}
+        onKeyUp={this.handleKeyUp}
       />
     );
   }
