@@ -1,4 +1,4 @@
-var AutocompleteInput = require('./AutocompleteInput');
+var TypeaheadInput = require('./TypeaheadInput');
 var InputPopupWrapper = require('./InputPopupWrapper');
 var ListPopup = require('./ListPopup');
 var ListKeyBindings = require('./ListKeyBindings');
@@ -24,6 +24,7 @@ var Combobox = React.createClass({
       selectedValue: React.PropTypes.any
     }).isRequired,
 
+    autocomplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
     onSelect: React.PropTypes.func,
     getLabelForOption: React.PropTypes.func,
     popupComponent: React.PropTypes.func
@@ -31,6 +32,7 @@ var Combobox = React.createClass({
 
   getDefaultProps: function() {
     return {
+      autocomplete: 'both',
       onSelect: emptyFunction,
       getLabelForOption: (option) => option+'',
       popupComponent: ListPopup
@@ -43,6 +45,25 @@ var Combobox = React.createClass({
       options: [],
       optionIndex: null
     };
+  },
+
+  isInlineCompleting: function() {
+    return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
+  },
+
+  getMenuIsOpen: function() {
+    var isMenuCompleting =
+      ['menu', 'both'].indexOf(this.props.autocomplete) !== -1;
+
+    return this.state.isOpen && isMenuCompleting;
+  },
+
+  getInputTypeaheadValue: function() {
+    var {options, optionIndex} = this.state;
+    if (!this.isInlineCompleting() || optionIndex === null) {
+      return null;
+    }
+    return this.props.getLabelForOption(options[optionIndex]);
   },
 
   updateOptionsForInput: function(inputValue) {
@@ -64,7 +85,7 @@ var Combobox = React.createClass({
       this.setState({
         isOpen: options.length > 0,
         options: options,
-        optionIndex: (options.length > 0) ? 0 : null
+        optionIndex: (this.isInlineCompleting() && options.length) ? 0 : null
       });
     });
   },
@@ -85,14 +106,16 @@ var Combobox = React.createClass({
   },
 
   handleComplete: function() {
-    var option = this.state.options[this.state.optionIndex];
-
     this.setState({isOpen: false});
-    this.props.onChange({
-      inputValue: this.props.getLabelForOption(option),
-      selectedValue: option
-    });
-    this.props.onSelect(option);
+
+    if (this.state.optionIndex) {
+      var option = this.state.options[this.state.optionIndex];
+      this.props.onSelect(option);
+      this.props.onChange({
+        inputValue: this.props.getLabelForOption(option),
+        selectedValue: option
+      });
+    }
   },
 
   handleCancel: function() {
@@ -101,6 +124,7 @@ var Combobox = React.createClass({
 
   renderPopup: function() {
     var PopupComponent = this.props.popupComponent;
+
     return (
       <PopupComponent 
         options={this.state.options}
@@ -114,23 +138,23 @@ var Combobox = React.createClass({
 
   render: function() {
     var {isOpen, optionIndex, options} = this.state;
-    var {getLabelForOption, value} = this.props;
-    var option = (optionIndex !== null) ? options[optionIndex] : null;
 
     return (
-      <InputPopupWrapper isOpen={isOpen} popup={this.renderPopup()}>
+      <InputPopupWrapper 
+        isOpen={this.getMenuIsOpen()} 
+        popup={this.renderPopup()}>
         <ListKeyBindings 
           optionsLength={options.length}
           optionIndex={optionIndex}
           onChange={this.handleListChange}
           onComplete={this.handleComplete}
           onCancel={this.handleCancel}>
-          <AutocompleteInput
-            aria-autocomplete="both"
-            completionValue={option && getLabelForOption(option)}
-            value={value.inputValue}
-            onChange={this.handleInputChange} 
-            onComplete={this.handleComplete}
+          <TypeaheadInput
+            aria-autocomplete={this.props.autocomplete}
+            typeaheadValue={this.getInputTypeaheadValue()}
+            value={this.props.value.inputValue}
+            onChange={this.handleInputChange}
+            onBlur={this.handleComplete}
           />
         </ListKeyBindings>
       </InputPopupWrapper>

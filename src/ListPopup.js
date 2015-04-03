@@ -48,8 +48,6 @@ var ListPopup = React.createClass({
       optionIndex, 
       options,
       getLabelForOption, 
-      onChange,
-      onComplete,
       ...otherProps
     } = this.props;
 

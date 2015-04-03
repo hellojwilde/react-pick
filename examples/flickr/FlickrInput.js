@@ -29,6 +29,7 @@ var FlickrInputPopupOption = React.createClass({
 var FlickrInputPopup = React.createClass({
 
   render: function() {
+
     return (
       <ListPopup 
         {...this.props} 
@@ -55,6 +56,7 @@ var FlickrInput = React.createClass({
     return (
       <Combobox
         {...this.props}
+        autocomplete="menu"
         getOptionsForInput={this.getOptionsForInput}
         getLabelForOption={() => ''}
         popupComponent={FlickrInputPopup}

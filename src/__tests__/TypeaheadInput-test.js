@@ -1,4 +1,4 @@
-var AutocompleteInput = require('../AutocompleteInput');
+var TypeaheadInput = require('../TypeaheadInput');
 var React = require('react/addons');
 
 var {TestUtils} = React.addons;
@@ -9,13 +9,12 @@ var emptyFunction = require('../helpers/emptyFunction');
 
 const KEY_BACKSPACE = 8;
 
-var AutocompleteInputTestWrapper = React.createClass({
+var TypeaheadInputTestWrapper = React.createClass({
 
   getDefaultProps: function() {
     return {
       initialValue: '',
-      onChange: emptyFunction,
-      onComplete: emptyFunction
+      onChange: emptyFunction
     };
   },
 
@@ -30,31 +29,25 @@ var AutocompleteInputTestWrapper = React.createClass({
     this.props.onChange(event);
   },
 
-  handleComplete: function(value) {
-    this.setState({value});
-    this.props.onComplete(value);
-  },
-
   render: function() {
-    var {onChange, onComplete, ...otherProps} = this.props;
+    var {onChange, ...otherProps} = this.props;
 
     return (
-      <AutocompleteInput
+      <TypeaheadInput
         {...otherProps}
         value={this.state.value}
         onChange={this.handleChange}
-        onComplete={this.handleComplete}
       />
     );
   }
 
 });
 
-describe('AutocompleteInput', function() {
+describe('TypeaheadInput', function() {
 
   it('shows some text, and supports typing', function() {
     var ctx = TestUtils.renderIntoDocument(
-      <AutocompleteInputTestWrapper initialValue="hello"/>
+      <TypeaheadInputTestWrapper initialValue="hello"/>
     );
 
     // Ensure that the text that we provided actually shows up in the input
@@ -69,9 +62,9 @@ describe('AutocompleteInput', function() {
     expect(inputNode.value).toBe('hello!');
   });
 
-  it('shows, selects, and enables completion of typeahead text', function() {
+  it('shows typeahead text when typing forward', function() {
     var ctx = TestUtils.renderIntoDocument(
-      <AutocompleteInputTestWrapper completionValue="California"/>
+      <TypeaheadInputTestWrapper typeaheadValue="California"/>
     );
 
     // Ensure that there's no typehead
@@ -84,16 +77,12 @@ describe('AutocompleteInput', function() {
     Simulate.keyDown(input, {key: 'c'});
     Simulate.keyUp(input, {key: 'c'});
     expect(inputNode.value).toBe('california');
-
-    // Ensure that we can tab complete the value
-    Simulate.blur(input);
-    expect(inputNode.value).toBe('California');
   });
 
   it('omits the typehead if the completion text does not match', function() {
     var ctx = TestUtils.renderIntoDocument(
-      <AutocompleteInputTestWrapper 
-        completionValue="California"
+      <TypeaheadInputTestWrapper 
+        typeaheadValue="California"
         initialValue="h"
       />
     );
