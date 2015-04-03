@@ -6,15 +6,19 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      comboboxValue: {
-        inputValue: 'California', 
-        selectedValue: {id: 'CA', name: 'California'}
-      } 
+      value: {
+        inputValue: '',
+        selectedValue: null
+      }
     };
   },
 
-  handleComboboxChange: function(comboboxValue) {
-    this.setState({comboboxValue});
+  handleChange: function(value) {
+    this.setState({value});
+  },
+
+  handleComplete: function(value) {
+    this.setState({value});
   },
 
   render: function() {
@@ -27,10 +31,11 @@ var App = React.createClass({
             Demo Source
           </a>
         </p>
-        <p>Selected State: {this.state.comboboxValue.selectedValue.id}</p>
+        <p>Selected State: {this.state.value.selectedValue}</p>
         <StateInput 
-          value={this.state.comboboxValue} 
-          onChange={this.handleComboboxChange}
+          value={this.state.value} 
+          onChange={this.handleChange}
+          onComplete={this.handleComplete}
         />
         <div><button>something else to focus</button></div>
       </div>
