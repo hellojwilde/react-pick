@@ -17,7 +17,7 @@ You'll need to make sure you're including the `styles.css` file in the root of t
 
 ### What's inside?
 
-There's a components designed for out-of-the-box usage:
+There's a component for out-of-the-box usage:
 
 - `<Combobox>` - An input that supports find displaying autocomplete suggestions inline as "type ahead" text, and as a popup menu displayed next to the `<input>`.
 
