@@ -17,20 +17,20 @@ You'll need to make sure you're including the `styles.css` file in the root of t
 
 ### What's inside?
 
-There's a component for out-of-the-box usage:
+For out-of-the-box usage:
 
-- `<Combobox>` - An input that supports find displaying autocomplete suggestions inline as "type ahead" text, and as a popup menu displayed next to the `<input>`.
+- `<Combobox>` - Supports find displaying asynchronous autocomplete suggestions inline as "type ahead" text, and as a popup menu.
 
-And then there's a few components that are helpful for both customizing `<Combobox>` and creating your own autocompletion components:
+For customizing `<Combobox>` and creating your own components:
 
 - `<TypeaheadInput>` - An `<input>` that robustly inserts "type ahead" text beyond the user's input.
 - `<InputPopupWrapper>` - Attaches a popup to an `<input>`.
 - `<ListPopup>` - A popup for rendering a list of possible completion options.
 - `<ListPopupOption>` - The default component for rendering options in `<ListPopup>`.
 
-### How do you use ?
+### How do you use `<Combobox>`?
 
-Pretty much much the same way you would the `<input>` component in React, but with an extra `getOptionsForInputValue` method to define what options should be there for autocomplete.
+Pretty much the same way you would the `<input>` component in React, but with an extra `getOptionsForInputValue` property to fetch autocompletion options.
 
 ```js
 var React = require('react');
