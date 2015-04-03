@@ -1,4 +1,4 @@
-### v0.3.1
+### v0.3.1 (2015-04-03)
 
 We're adding a proper changelog now.
 
