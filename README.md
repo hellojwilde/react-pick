@@ -1,5 +1,7 @@
 # react-pick
 
+[![Build Status](https://travis-ci.org/hellojwilde/react-pick.svg?branch=master)](https://travis-ci.org/hellojwilde/react-pick)
+
 Accessible autocompletion components (e.g. typeahead inputs, popups, and comboboxes), implemented in React.
 
 Intially derived from Ryan Florence's awesome [react-autocomplete](https://github.com/rackt/react-autocomplete).
