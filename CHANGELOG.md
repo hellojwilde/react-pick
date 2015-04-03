@@ -4,6 +4,8 @@ We're adding a proper changelog now.
 
 #### BUGFIXES
 
+- [`1c7b164`](https://github.com/hellojwilde/react-pick/commit/1c7b1649a66d92482262abc016309f1e0a401a98) Ensure that properties like placeholder are propagated all the way to the <input>
+
 ### v0.3.0 (2015-04-03)
  
 #### REFACTOR OF AWESOME, ROUND 2
