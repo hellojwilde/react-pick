@@ -14,14 +14,12 @@
   },
   "author": "Jonathan Wilde <hello@jwilde.me>",
   "license": "MIT",
-  "dependencies": {
-    "object-assign": "^2.0.0"
-  },
   "peerDependencies": {
     "react": "^0.13.0"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",
+    "babel-loader": "^5.0.0",
     "es6-promise-debounce": "git://github.com/bollwyvl/es6-promise-debounce",
     "expect": "^1.6.0",
     "gulp": "^3.8.11",
