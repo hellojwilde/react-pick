@@ -1,3 +1,9 @@
+### v0.3.2 (2015-04-03)
+
+#### FEATURES
+
+- [`b5b17e2`](https://github.com/hellojwilde/react-pick/commit/b5b17e2) Make sure that we can swap out the component for the input.
+
 ### v0.3.1 (2015-04-03)
 
 We're adding a proper changelog now.
