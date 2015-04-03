@@ -14,14 +14,21 @@ var InputPopupWrapper = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
+    /**
+     * Boolean value that's true when the popup should be open.
+     */
     isOpen: React.PropTypes.bool,
-    popup: React.PropTypes.element
+
+    /**
+     * The rendered React element that should be displayed in the popup.
+     */
+    popupElement: React.PropTypes.element
   },
 
   getDefaultProps: function() {
     return {
       isOpen: false,
-      popup: <div/>
+      popupElement: <div/>
     };
   },
 
@@ -46,7 +53,7 @@ var InputPopupWrapper = React.createClass({
             'InputPopupWrapper-popup',
             this.props.isOpen && 'InputPopupWrapper-popup--isOpen'
           )}>
-          {this.props.popup}
+          {this.props.popupElement}
         </div>
       </div>
     );

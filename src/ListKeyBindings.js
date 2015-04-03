@@ -12,20 +12,40 @@ const KEY_ESC = 27;
 /**
  * <ListKeyBindings> represents the types of key behavior that should be used
  * to navigate between the different sequential items in <ListPopup>.
- *
- * This is a separate wrapper component because we also want to apply these
- * same sorts of key bindings to the <input> in the <Combobox> widget.
  */
 var ListKeyBindings = React.createClass({
 
   mixins: [PureRenderMixin],
 
   propTypes: {
-    optionIndex: React.PropTypes.number,
-    optionsLength: React.PropTypes.number,
+    /**
+     * Event handler for when the user requests for the <ListPopup> to focus on
+     * a different index. Function receives the `index` of the option to focus.
+     */
     onChange: React.PropTypes.func.isRequired,
+
+    /**
+     * Event handler for when the user requests for the <ListPopup> to fill in
+     * the parent <Combobox> widget. Function receives the `index` of the
+     * option to focus.
+     */
     onComplete: React.PropTypes.func.isRequired,
-    onCancel: React.PropTypes.func.isRequired
+
+    /**
+     * Event handler for when the user requests to cancel the autocompletion 
+     * process and hide the <ListPopup>.
+     */
+    onCancel: React.PropTypes.func.isRequired,
+
+    /**
+     * The currently focused index of the affiliated <ListPopup>.
+     */
+    optionIndex: React.PropTypes.number,
+
+    /**
+     * The number of options in the affiliated <ListPopup>.
+     */
+    optionsLength: React.PropTypes.number
   },
 
   getDefaultProps: function() {
@@ -37,8 +57,8 @@ var ListKeyBindings = React.createClass({
 
   getKeyBindings: function() {
     return {
-      [KEY_ARROW_DOWN]: this.changeNext,
-      [KEY_ARROW_UP]: this.changePrevious,
+      [KEY_ARROW_DOWN]: this.changeToNext,
+      [KEY_ARROW_UP]: this.changeToPrevious,
       [KEY_RETURN]: this.complete,
       [KEY_ESC]: this.props.onCancel
     };
@@ -53,7 +73,7 @@ var ListKeyBindings = React.createClass({
     this.isCompletionPossible() && onComplete(optionIndex)
   },
 
-  changeNext: function() {
+  changeToNext: function() {
     var {optionIndex, optionsLength, onChange} = this.props;
 
     this.isCompletionPossible() && onChange(
@@ -63,7 +83,7 @@ var ListKeyBindings = React.createClass({
     );
   },
 
-  changePrevious: function() {
+  changeToPrevious: function() {
     var {optionIndex, optionsLength, onChange} = this.props;
 
     this.isCompletionPossible() && this.props.onChange(
@@ -74,9 +94,7 @@ var ListKeyBindings = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    var bindings = this.getKeyBindings();
-    var binding = bindings[event.keyCode];
-
+    var binding = this.getKeyBindings()[event.keyCode];
     if (binding) {
       event.preventDefault();
       binding();

@@ -1,12 +1,13 @@
-var TypeaheadInput = require('./TypeaheadInput');
 var InputPopupWrapper = require('./InputPopupWrapper');
-var ListPopup = require('./ListPopup');
 var ListKeyBindings = require('./ListKeyBindings');
+var ListPopup = require('./ListPopup');
 var React = require('react/addons');
+var TypeaheadInput = require('./TypeaheadInput');
 
 var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
+var getUniqueId = require('./helpers/getUniqueId');
 
 /**
  * <Combobox> is a combobox-style widget that supports both inline- and 
@@ -17,16 +18,57 @@ var Combobox = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
+    /**
+     * A function that fetches the autocomplete options for typed user input.
+     * It takes the `value` of the <input>, and returns a promise that resolves
+     * with an array of autocomplete options.
+     */
     getOptionsForInput: React.PropTypes.func.isRequired,
+
+    /**
+     * Event handler fired when the `value` of the component changes.
+     * Function called is passed `value`.
+     */
     onChange: React.PropTypes.func.isRequired,
+
+    /**
+     * An object for the current value of the <Combobox> with two properties:
+     *   - `inputValue`, the text that the user entered into the <Combobox>
+     *     or was autocompleted as label for the selected value.
+     *   - `selectedValue`, the value from the autocomplete options that the 
+     *     user selected.
+     */
     value: React.PropTypes.shape({
       inputValue: React.PropTypes.string,
       selectedValue: React.PropTypes.any
     }).isRequired,
 
+    /**
+     * The type of autocompletion behavior:
+     *   - `menu` to display a popup menu with autocompletion options.
+     *   - `inline` to display the first autocompletion option as text 
+     *      "typed ahead" of the user's input.
+     *   - `both` to display both at once.
+     * Default is `both`.
+     */
     autocomplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
+
+    /**
+     * Event handler fired when `value.selectedValue` changes to a new 
+     * non-`null` value. Function called is passed `value.selectedValue`.
+     */
     onSelect: React.PropTypes.func,
+
+    /**
+     * Function that takes an `option` value, and returns a string label.
+     * Default is a function that coerces the `option` to a string.
+     */
     getLabelForOption: React.PropTypes.func,
+
+    /**
+     * The component to render for the popup.
+     * Default is `ListPopup`.
+     */
     popupComponent: React.PropTypes.func
   },
 
@@ -41,6 +83,7 @@ var Combobox = React.createClass({
 
   getInitialState: function() {
     return {
+      id: getUniqueId('Combobox'),
       isOpen: false,
       options: [],
       optionIndex: null
@@ -49,6 +92,10 @@ var Combobox = React.createClass({
 
   isInlineCompleting: function() {
     return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
+  },
+
+  getDescendantIdForOption: function(idx) {
+    return (idx !== null) ? `${this.state.id}-${idx}` : null;
   },
 
   getMenuIsOpen: function() {
@@ -108,8 +155,10 @@ var Combobox = React.createClass({
   handleComplete: function() {
     this.setState({isOpen: false});
 
-    if (this.state.optionIndex) {
+    if (this.state.optionIndex !== null) {
       var option = this.state.options[this.state.optionIndex];
+
+      this.setState({optionIndex: null});
       this.props.onSelect(option);
       this.props.onChange({
         inputValue: this.props.getLabelForOption(option),
@@ -132,6 +181,7 @@ var Combobox = React.createClass({
         onChange={this.handleListChange}
         onComplete={this.handleComplete}
         getLabelForOption={this.props.getLabelForOption}
+        getDescendantIdForOption={this.getDescendantIdForOption}
       />
     ); 
   },
@@ -142,7 +192,7 @@ var Combobox = React.createClass({
     return (
       <InputPopupWrapper 
         isOpen={this.getMenuIsOpen()} 
-        popup={this.renderPopup()}>
+        popupElement={this.renderPopup()}>
         <ListKeyBindings 
           optionsLength={options.length}
           optionIndex={optionIndex}
@@ -150,6 +200,7 @@ var Combobox = React.createClass({
           onComplete={this.handleComplete}
           onCancel={this.handleCancel}>
           <TypeaheadInput
+            aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
             aria-autocomplete={this.props.autocomplete}
             typeaheadValue={this.getInputTypeaheadValue()}
             value={this.props.value.inputValue}

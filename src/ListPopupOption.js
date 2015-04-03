@@ -2,21 +2,24 @@ var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
 
-var joinClasses = require('react/lib/joinClasses');
-
 /**
  * <ListPopupOption> is a default implementation for rows rendered for the 
- * `options` in the <ListPopup> component.
- *
- * To render the provided `option`, <ListPopupOption> displays the string label
- * as determined by the `getLabelForOption` function.
+ * `options` in the <ListPopup> component. For the row content, it displays the 
+ * string label as determined by the `getLabelForOption` function.
  */
 var ListPopupOption = React.createClass({
 
   mixins: [PureRenderMixin],
 
   propTypes: {
+    /**
+     * Function that takes an `option` value, and returns a string label.
+     */
     getLabelForOption: React.PropTypes.func.isRequired,
+
+    /**
+     * Option value that the row is representing.
+     */
     option: React.PropTypes.any.isRequired
   },
 

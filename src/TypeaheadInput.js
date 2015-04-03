@@ -28,24 +28,36 @@ function getCompletionTypeahead(value, typeaheadValue) {
  * a UI to show text "typed ahead" of the user's current input. This is useful
  * for displaying a prediction about what the user is going to type next.
  *
- * To use the component, you just supply two additional properties over what
- * you normally would for an <input> element:
+ * To use the component, in addition to the properties you supply normally,
+ * you supply `typeaheadValue`, the full string you want to have typed ahead.
+ * For example, if the user typed "calif", and you wanted to suggest 
+ * "California", you would supply "California" as the `typeaheadValue` as usual:
  *
- *  - `typeaheadValue`, the full predicted string to type into the textbox.
- *    For example, if you were trying to autocomplete dates, and the user typed 
- *    "Calif", you might supply "California" for this, and
- *  - `onComplete`, an event handler for when the user tabs or otherwise does
- *    an action to complete the text in the component.
+ *    <TypeaheadInput value="calif" typeaheadValue="California"/>
  *
+ * The value will be inserted into the underlying <input> as the user types.
+ * The text beyond what the user typed will be selected so that they can type
+ * over it. If the user types text that doesn't match "California", no value 
+ * will be completed.
+ * 
  * This component attempts to conform to WAI-ARIA's autocomplete requirements:
- * <http://www.w3.org/TR/wai-aria/states_and_properties#aria-autocomplete>
+ * <http://www.w3.org/TR/wai-aria/states_and_properties#aria-autocomplete>.
  */
 var TypeaheadInput = React.createClass({
 
   mixins: [PureRenderMixin],
 
   propTypes: {
+    /**
+     * The value that to type over and ahead of the user's current input.
+     * This is the value that you're suggesting to the user.
+     */
     typeaheadValue: React.PropTypes.string,
+
+    /**
+     * The value that the user intended to type into the textbox.
+     * Semantically identical to the property with the same name on <input>.
+     */
     value: React.PropTypes.string
   },
 

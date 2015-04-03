@@ -3,8 +3,6 @@ var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
 
-var emptyFunction = require('./helpers/emptyFunction');
-var getUniqueId = require('./helpers/getUniqueId');
 var joinClasses = require('react/lib/joinClasses');
 
 /**
@@ -15,18 +13,54 @@ var ListPopup = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
+    /**
+     * Function that given an `index` of an option, returns an ID that should
+     * be unique across the document, but deterministic--multiple calls of this
+     * function with the same `index` should return the same ID.
+     *
+     * Useful for assigning `aria-activedescendant` in a parent component.
+     */
+    getDescendantIdForOption: React.PropTypes.func.isRequired,
+
+    /**
+     * Function that takes an `option` value, and returns a string label.
+     */
     getLabelForOption: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func,
-    onComplete: React.PropTypes.func,
+
+    /**
+     * Event handler called if the user does an action to change `optionIndex`.
+     * The function called receives the value of `optionIndex` to change to.
+     */
+    onChange: React.PropTypes.func.isRequired,
+
+    /**
+     * Event handler called if the user does an action to complete a given 
+     * option into the parent <Combobox> as the value. The function called 
+     * receives the value of `optionIndex` to complete.
+     */
+    onComplete: React.PropTypes.func.isRequired,
+
+    /**
+     * The React component to use render for each option of the list popup. 
+     * The component must support rendering passed properties and `className`, 
+     * and will receive the `option` and `getLabelForOption` to help with 
+     * rendering.
+     */
     optionComponent: React.PropTypes.func,
+
+    /**
+     * The currently focused index of the list view.
+     */
     optionIndex: React.PropTypes.number,
+
+    /**
+     * The different option values that the user is selecting between.
+     */
     options: React.PropTypes.array
   },
 
   getDefaultProps: function() {
     return {
-      onChange: emptyFunction,
-      onComplete: emptyFunction,
       optionComponent: ListPopupOption,
       optionIndex: null,
       options: []
@@ -48,6 +82,7 @@ var ListPopup = React.createClass({
       optionIndex, 
       options,
       getLabelForOption, 
+      getDescendantIdForOption,
       ...otherProps
     } = this.props;
 
@@ -63,6 +98,7 @@ var ListPopup = React.createClass({
                 'ListPopup-option', 
                 (idx === optionIndex) && 'ListPopup-option--isFocused'
               )}
+              id={getDescendantIdForOption(idx)}
               getLabelForOption={getLabelForOption}
               key={idx}
               onClick={this.handleOptionClick.bind(this, idx)}

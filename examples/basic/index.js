@@ -31,7 +31,7 @@ var App = React.createClass({
             Demo Source
           </a>
         </p>
-        <p>Selected State: </p>
+        <p>Selected State: {this.state.value.selectedValue}</p>
         <StateInput 
           value={this.state.value} 
           onChange={this.handleChange}
