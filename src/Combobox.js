@@ -23,7 +23,7 @@ var Combobox = React.createClass({
      * It takes the `value` of the <input>, and returns a promise that resolves
      * with an array of autocomplete options.
      */
-    getOptionsForInput: React.PropTypes.func.isRequired,
+    getOptionsForInputValue: React.PropTypes.func.isRequired,
 
     /**
      * Event handler fired when the `value` of the component changes.
@@ -107,15 +107,17 @@ var Combobox = React.createClass({
 
   getInputTypeaheadValue: function() {
     var {options, optionIndex} = this.state;
+    
     if (!this.isInlineCompleting() || optionIndex === null) {
       return null;
     }
+
     return this.props.getLabelForOption(options[optionIndex]);
   },
 
-  updateOptionsForInput: function(inputValue) {
+  updateOptionsForInputValue: function(inputValue) {
     var optionsPromise = this.optionsPromise =
-      this.props.getOptionsForInput(inputValue);
+      this.props.getOptionsForInputValue(inputValue);
     
     optionsPromise.then((options) => {
       // It's possible that when we're fetching, we may get out-of-order
@@ -141,7 +143,7 @@ var Combobox = React.createClass({
     var inputValue = event.target.value;
 
     this.setState({optionIndex: null});
-    this.updateOptionsForInput(inputValue);
+    this.updateOptionsForInputValue(inputValue);
     this.props.onChange({
       inputValue: inputValue,
       selectedValue: null

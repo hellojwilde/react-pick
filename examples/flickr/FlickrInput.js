@@ -42,7 +42,7 @@ var FlickrInputPopup = React.createClass({
 
 var FlickrInput = React.createClass({
 
-  getOptionsForInput: debounce(function(inputValue) {
+  getOptionsForInputValue: debounce(function(inputValue) {
     return new Promise(function(resolve, reject) {
       $.getJSON(
         FLICKR_URL, 
@@ -57,7 +57,7 @@ var FlickrInput = React.createClass({
       <Combobox
         {...this.props}
         autocomplete="menu"
-        getOptionsForInput={this.getOptionsForInput}
+        getOptionsForInputValue={this.getOptionsForInputValue}
         getLabelForOption={() => ''}
         popupComponent={FlickrInputPopup}
       />

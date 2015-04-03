@@ -5,10 +5,9 @@ require('../../src/styles.css');
 
 var StateInput = React.createClass({
 
-  getOptionsForInput: function(inputValue) {
+  getOptionsForInputValue: function(inputValue) {
     return new Promise((resolve, reject) => {
       var search = inputValue.toLowerCase();
-
       if (search === '') {
         resolve(StateData);
         return;
@@ -35,7 +34,7 @@ var StateInput = React.createClass({
     return (
       <Combobox 
         {...this.props}
-        getOptionsForInput={this.getOptionsForInput}
+        getOptionsForInputValue={this.getOptionsForInputValue}
         getLabelForOption={this.getLabelForOption}
       />
     );
