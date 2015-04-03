@@ -190,6 +190,7 @@ var Combobox = React.createClass({
 
   render: function() {
     var {isOpen, optionIndex, options} = this.state;
+    var {autocomplete, ...otherProps} = this.props;
 
     return (
       <InputPopupWrapper 
@@ -202,6 +203,7 @@ var Combobox = React.createClass({
           onComplete={this.handleComplete}
           onCancel={this.handleCancel}>
           <TypeaheadInput
+            {...otherProps}
             aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
             aria-autocomplete={this.props.autocomplete}
             typeaheadValue={this.getInputTypeaheadValue()}
