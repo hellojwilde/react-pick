@@ -6,7 +6,7 @@ var emptyFunction = require('./helpers/emptyFunction');
 
 const KEY_BACKSPACE = 8;
 
-function getCompletionTypeahead(value, typeaheadValue) {
+function getTypeahead(value, typeaheadValue) {
   var normalizedValue = (value || '').toLowerCase();
   var normalizedTypeaheadValue = (typeaheadValue || '').toLowerCase();
 
@@ -91,7 +91,7 @@ var TypeaheadInput = React.createClass({
 
     var input = this.refs['input'].getDOMNode();
     var {value, typeaheadValue} = this.props;
-    var typeahead = getCompletionTypeahead(value, typeaheadValue);
+    var typeahead = getTypeahead(value, typeaheadValue);
 
     if (typeahead !== null) {
       input.value = typeahead.valueWithTypeahead;
