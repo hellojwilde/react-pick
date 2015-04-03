@@ -21,7 +21,7 @@ You'll need to make sure you're including the `styles.css` file in the root of t
 
 For out-of-the-box usage:
 
-- [`<Combobox>`](https://github.com/hellojwilde/react-pick/blob/master/src/Combobox.js) - Supports find displaying asynchronous autocomplete suggestions inline as "type ahead" text, and as a popup menu.
+- [`<Combobox>`](https://github.com/hellojwilde/react-pick/blob/master/src/Combobox.js) - Supports find displaying asynchronous autocomplete suggestions inline as "type ahead" text, as a popup menu, and as both at once. Supports keyboard navigation, and seeks to be WAI-ARIA compliant.
 
 For customizing `<Combobox>` and creating your own components:
 
