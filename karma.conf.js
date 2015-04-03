@@ -25,7 +25,7 @@ module.exports = function(config) {
 
       module: {
         loaders: [
-          {test: /\.js$/, loader: 'babel-loader?experimental=true'}
+          {test: /\.js$/, loader: 'babel-loader?stage=0'}
         ]
       }
     },
