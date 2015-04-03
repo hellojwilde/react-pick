@@ -24,13 +24,14 @@ var Combobox = React.createClass({
       selectedValue: React.PropTypes.any
     }).isRequired,
 
+    onSelect: React.PropTypes.func,
     getLabelForOption: React.PropTypes.func,
     popupComponent: React.PropTypes.func
   },
 
   getDefaultProps: function() {
     return {
-      autocomplete: 'both',
+      onSelect: emptyFunction,
       getLabelForOption: (option) => option+'',
       popupComponent: ListPopup
     };
@@ -91,6 +92,7 @@ var Combobox = React.createClass({
       inputValue: this.props.getLabelForOption(option),
       selectedValue: option
     });
+    this.props.onSelect(option);
   },
 
   handleCancel: function() {
@@ -98,8 +100,9 @@ var Combobox = React.createClass({
   },
 
   renderPopup: function() {
+    var PopupComponent = this.props.popupComponent;
     return (
-      <ListPopup 
+      <PopupComponent 
         options={this.state.options}
         optionIndex={this.state.optionIndex}
         onChange={this.handleListChange}
