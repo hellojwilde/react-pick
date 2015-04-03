@@ -52,7 +52,9 @@ module.exports = function(config) {
     // start these browsers
     browsers: ['Firefox'],
 
-    // Continuous Integration mode
-    singleRun: process.env.CONTINUOUS_INTEGRATION || false
+    // make it work on Travis CI; based on:
+    // <https://github.com/rackt/react-router/blob/master/karma.conf.js>
+    browserNoActivityTimeout: 30000,
+    singleRun: process.env.CONTINUOUS_INTEGRATION === 'true'
   });
 };
