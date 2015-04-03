@@ -69,7 +69,13 @@ var Combobox = React.createClass({
      * The component to render for the popup.
      * Default is `ListPopup`.
      */
-    popupComponent: React.PropTypes.func
+    popupComponent: React.PropTypes.func,
+
+    /**
+     * The component to render for the input.
+     * Default is `TypeaheadInput`.
+     */
+    inputComponent: React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -77,7 +83,8 @@ var Combobox = React.createClass({
       autocomplete: 'both',
       onSelect: emptyFunction,
       getLabelForOption: (option) => option+'',
-      popupComponent: ListPopup
+      popupComponent: ListPopup,
+      inputComponent: TypeaheadInput
     };
   },
 
@@ -189,6 +196,7 @@ var Combobox = React.createClass({
   },
 
   render: function() {
+    var InputComponent = this.props.inputComponent;
     var {isOpen, optionIndex, options} = this.state;
     var {autocomplete, ...otherProps} = this.props;
 
@@ -202,7 +210,7 @@ var Combobox = React.createClass({
           onChange={this.handleListChange}
           onComplete={this.handleComplete}
           onCancel={this.handleCancel}>
-          <TypeaheadInput
+          <InputComponent
             {...otherProps}
             aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
             aria-autocomplete={this.props.autocomplete}
