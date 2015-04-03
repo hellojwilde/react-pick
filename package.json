@@ -8,6 +8,7 @@
     "url": "https://github.com/hellojwilde/react-pick.git"
   },
   "homepage": "https://github.com/hellojwilde/react-pick",
+  "bugs": "https://github.com/hellojwilde/react-pick/issues",
   "scripts": {
     "test": "karma start",
     "prepublish": "gulp build-node"
