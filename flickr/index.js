@@ -6,11 +6,8 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      value: {
-        inputValue: '', 
-        selectedValue: ''
-      },
-      selections: []
+      value: '',
+      completions: []
     };
   },
 
@@ -18,14 +15,14 @@ var App = React.createClass({
     this.setState({value});
   },
 
-  handleSelect: function(selection) {
+  handleComplete: function(selection) {
     this.setState({
-      selections: this.state.selections.concat(selection)
+      completions: this.state.completions.concat(selection)
     });
   },
 
-  renderSelections: function() {
-    return this.state.selections.map(function(image, key) {
+  renderCompletions: function() {
+    return this.state.completions.map(function(image, key) {
       return <img key={key} src={image.media.m}/>;
     });
   },
@@ -43,10 +40,10 @@ var App = React.createClass({
         <FlickrInput
           value={this.state.value}
           onChange={this.handleChange}
-          onSelect={this.handleSelect}
+          onComplete={this.handleComplete}
         />
         <div>
-          {this.renderSelections()}
+          {this.renderCompletions()}
         </div>
       </div>
     );

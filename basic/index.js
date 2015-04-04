@@ -6,10 +6,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      value: {
-        inputValue: 'California',
-        selectedValue: {id: 'CA', name: 'California'}
-      }
+      value: {id: 'CA', name: 'California'}
     };
   },
 
@@ -17,13 +14,7 @@ var App = React.createClass({
     this.setState({value});
   },
 
-  handleComplete: function(value) {
-    this.setState({value});
-  },
-
   render: function() {
-    var {selectedValue} = this.state.value;
-
     return (
       <div>
         <h1>react-pick</h1>
@@ -33,11 +24,10 @@ var App = React.createClass({
             Demo Source
           </a>
         </p>
-        <p>Selected State: {selectedValue && selectedValue.id}</p>
+        <p>Selected State: {this.state.value && this.state.value.id}</p>
         <StateInput 
           value={this.state.value} 
           onChange={this.handleChange}
-          onComplete={this.handleComplete}
         />
         <div><button>something else to focus</button></div>
       </div>
