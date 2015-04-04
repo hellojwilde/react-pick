@@ -1,13 +1,13 @@
 var Combobox = require('./Combobox');
-var InputPopupWrapper = require('./InputPopupWrapper');
-var ListPopup = require('./ListPopup');
-var ListPopupOption = require('./ListPopupOption');
+var InputWithPopup = require('./InputWithPopup');
+var List = require('./List');
+var ListOption = require('./ListOption');
 var TypeaheadInput = require('./TypeaheadInput');
 
 module.exports = {
   Combobox,
-  InputPopupWrapper,
-  ListPopup,
-  ListPopupOption,
+  InputWithPopup,
+  List,
+  ListOption,
   TypeaheadInput
 };

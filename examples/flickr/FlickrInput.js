@@ -1,5 +1,5 @@
 var React = require('react');
-var {Combobox, ListPopup, ListPopupOption} = require('../../src');
+var {Combobox, List, ListOption} = require('../../src');
 
 require('../../src/styles.css');
 
@@ -8,7 +8,7 @@ var debounce = require('es6-promise-debounce')(Promise);
 const FLICKR_URL = 
   'http://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
 
-var FlickrInputPopupOption = React.createClass({
+var FlickrInputListOption = React.createClass({
 
   propTypes: {
     option: React.PropTypes.object
@@ -18,22 +18,22 @@ var FlickrInputPopupOption = React.createClass({
     var {option, ...otherProps} = this.props;
 
     return (
-      <div {...otherProps}>
+      <li {...otherProps}>
         <img src={option.media.m} height="50" />
-      </div>
+      </li>
     );
   }
 
 });
 
-var FlickrInputPopup = React.createClass({
+var FlickrInputList = React.createClass({
 
   render: function() {
 
     return (
-      <ListPopup 
+      <List 
         {...this.props} 
-        optionComponent={FlickrInputPopupOption}
+        optionComponent={FlickrInputListOption}
       />
     );
   }
@@ -59,7 +59,7 @@ var FlickrInput = React.createClass({
         autocomplete="menu"
         getOptionsForInputValue={this.getOptionsForInputValue}
         getLabelForOption={() => ''}
-        popupComponent={FlickrInputPopup}
+        listComponent={FlickrInputList}
       />
     );
   }

@@ -1,4 +1,4 @@
-var ListPopupOption = require('./ListPopupOption');
+var ListOption = require('./ListOption');
 var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
@@ -6,9 +6,9 @@ var {PureRenderMixin} = React.addons;
 var joinClasses = require('react/lib/joinClasses');
 
 /**
- * <ListPopup> is a component that renders the list that Combobox displays.
+ * <List> is a component that renders the list that Combobox displays.
  */
-var ListPopup = React.createClass({
+var List = React.createClass({
 
   mixins: [PureRenderMixin],
 
@@ -61,7 +61,7 @@ var ListPopup = React.createClass({
 
   getDefaultProps: function() {
     return {
-      optionComponent: ListPopupOption,
+      optionComponent: ListOption,
       optionIndex: null,
       options: []
     };
@@ -87,16 +87,16 @@ var ListPopup = React.createClass({
     } = this.props;
 
     return (
-      <div 
+      <ul 
         {...otherProps} 
-        className={joinClasses('ListPopup', className)}
+        className={joinClasses('List', className)}
         role="listbox">
         {options.map((option, idx) => {
           return (
             <OptionComponent
               className={joinClasses(
-                'ListPopup-option', 
-                (idx === optionIndex) && 'ListPopup-option--isFocused'
+                'List-option', 
+                (idx === optionIndex) && 'List-option--isFocused'
               )}
               id={getDescendantIdForOption(idx)}
               getLabelForOption={getLabelForOption}
@@ -108,10 +108,10 @@ var ListPopup = React.createClass({
             />
           );
         })}
-      </div>
+      </ul>
     );
   }
 
 });
 
-module.exports = ListPopup;
+module.exports = List;

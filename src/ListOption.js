@@ -3,11 +3,11 @@ var React = require('react/addons');
 var {PureRenderMixin} = React.addons;
 
 /**
- * <ListPopupOption> is a default implementation for rows rendered for the 
- * `options` in the <ListPopup> component. For the row content, it displays the 
+ * <ListOption> is a default implementation for rows rendered for the 
+ * `options` in the <List> component. For the row content, it displays the 
  * string label as determined by the `getLabelForOption` function.
  */
-var ListPopupOption = React.createClass({
+var ListOption = React.createClass({
 
   mixins: [PureRenderMixin],
 
@@ -27,12 +27,12 @@ var ListPopupOption = React.createClass({
     var {option, getLabelForOption, ...otherProps} = this.props;
 
     return (
-      <div {...otherProps}>
+      <li {...otherProps}>
         {getLabelForOption(option)}
-      </div>
+      </li>
     );
   }
 
 });
 
-module.exports = ListPopupOption;
+module.exports = ListOption;

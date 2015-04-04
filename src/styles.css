@@ -1,16 +1,16 @@
-.InputPopupWrapper {
+.InputWithPopup {
   display: inline-block;
   position: relative;
 }
 
-.InputPopupWrapper-input {
+.InputWithPopup-input {
   width: 100%;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.InputPopupWrapper-popup {
+.InputWithPopup-popup {
   display: none;
   position: absolute;
   z-index: 1;
@@ -28,17 +28,23 @@
   box-sizing: border-box;
 }
 
-.InputPopupWrapper-popup--isOpen {
+.InputWithPopup-popup--isOpen {
   display: block;
 }
 
-.ListPopup-option {
+.List {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.List-option {
   display: block;
   padding: 2px 16px;
   cursor: default;
 }
 
-.ListPopup-option--isFocused {
+.List-option--isFocused {
   outline: 0;
   color: white;
   background: hsl(200, 50%, 50%);

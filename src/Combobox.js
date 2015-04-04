@@ -1,6 +1,6 @@
 var InputWithPopup = require('./InputWithPopup');
 var ListKeyBindings = require('./ListKeyBindings');
-var ListPopup = require('./ListPopup');
+var List = require('./List');
 var React = require('react/addons');
 var TypeaheadInput = require('./TypeaheadInput');
 
@@ -61,10 +61,10 @@ var Combobox = React.createClass({
     getLabelForOption: React.PropTypes.func,
 
     /**
-     * The component to render for the popup.
-     * Default is `ListPopup`.
+     * The component to render for the list in the popup.
+     * Default is `List`.
      */
-    listComponent: React.PropTypes.func,
+    listComponent: React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -72,7 +72,7 @@ var Combobox = React.createClass({
       autocomplete: 'both',
       onComplete: emptyFunction,
       getLabelForOption: (option) => option+'',
-      listComponent: ListPopup
+      listComponent: List
     };
   },
 
