@@ -1,4 +1,4 @@
-var InputPopupWrapper = require('./InputPopupWrapper');
+var InputWithPopup = require('./InputWithPopup');
 var ListKeyBindings = require('./ListKeyBindings');
 var ListPopup = require('./ListPopup');
 var React = require('react/addons');
@@ -64,13 +64,7 @@ var Combobox = React.createClass({
      * The component to render for the popup.
      * Default is `ListPopup`.
      */
-    popupComponent: React.PropTypes.func,
-
-    /**
-     * The component to render for the input.
-     * Default is `TypeaheadInput`.
-     */
-    inputComponent: React.PropTypes.func
+    listComponent: React.PropTypes.func,
   },
 
   getDefaultProps: function() {
@@ -78,8 +72,7 @@ var Combobox = React.createClass({
       autocomplete: 'both',
       onComplete: emptyFunction,
       getLabelForOption: (option) => option+'',
-      popupComponent: ListPopup,
-      inputComponent: TypeaheadInput
+      listComponent: ListPopup
     };
   },
 
@@ -152,6 +145,18 @@ var Combobox = React.createClass({
     this.props.onChange(null);
   },
 
+  handleInputKeyDown: function(event) {
+    var {isOpen, optionIndex, options} = this.state;
+
+    ListKeyBindings.handleKeyDown({
+      optionsLength: options.length,
+      optionIndex: optionIndex,
+      onChange: this.handleListChange,
+      onComplete: this.handleComplete,
+      onCancel: this.handleCancel
+    }, event);
+  },
+
   handleListChange: function(optionIndex) {
     this.setState({optionIndex});
   },
@@ -176,47 +181,33 @@ var Combobox = React.createClass({
     this.setState({optionIndex: null, isOpen: false});
   },
 
-  renderPopup: function() {
-    var PopupComponent = this.props.popupComponent;
-
-    return (
-      <PopupComponent 
-        options={this.state.options}
-        optionIndex={this.state.optionIndex}
-        onChange={this.handleListChange}
-        onComplete={this.handleComplete}
-        getLabelForOption={this.props.getLabelForOption}
-        getDescendantIdForOption={this.getDescendantIdForOption}
-      />
-    ); 
-  },
-
   render: function() {
-    var InputComponent = this.props.inputComponent;
     var {isOpen, optionIndex, options} = this.state;
     var {autocomplete, ...otherProps} = this.props;
 
+    var ListComponent = this.props.listComponent;
+
     return (
-      <InputPopupWrapper 
-        isOpen={this.getMenuIsOpen()} 
-        popupElement={this.renderPopup()}>
-        <ListKeyBindings 
-          optionsLength={options.length}
-          optionIndex={optionIndex}
+      <InputWithPopup
+        {...otherProps}
+        aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
+        aria-autocomplete={autocomplete}
+        isOpen={this.getMenuIsOpen()}
+        onBlur={this.handleComplete}
+        onChange={this.handleInputChange}
+        onKeyDown={this.handleInputKeyDown}
+        typeaheadValue={this.getInputTypeaheadValue()}
+        value={this.state.inputValue}
+        inputComponent={TypeaheadInput}>
+        <ListComponent 
+          options={this.state.options}
+          optionIndex={this.state.optionIndex}
           onChange={this.handleListChange}
           onComplete={this.handleComplete}
-          onCancel={this.handleCancel}>
-          <InputComponent
-            {...otherProps}
-            aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
-            aria-autocomplete={this.props.autocomplete}
-            typeaheadValue={this.getInputTypeaheadValue()}
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-            onBlur={this.handleComplete}
-          />
-        </ListKeyBindings>
-      </InputPopupWrapper>
+          getLabelForOption={this.props.getLabelForOption}
+          getDescendantIdForOption={this.getDescendantIdForOption}
+        />
+      </InputWithPopup>
     );
   }
 

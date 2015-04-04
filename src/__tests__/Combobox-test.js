@@ -14,7 +14,7 @@ describe('Combobox', function() {
         placeholder="magic"
         getOptionsForInputValue={emptyFunction}
         onChange={emptyFunction}
-        value={{inputValue: null, selectedValue: null}}
+        value={null}
       />
     );
 
