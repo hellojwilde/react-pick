@@ -1,3 +1,7 @@
+### v0.4.0 (2015-04-04)
+
+- [`c5c619c`](https://github.com/hellojwilde/react-pick/commit/c5c619c) Switch the format of the `value` to something like with a normal `<input>`. Change `onSelect` to `onComplete` to make things more consistent and avoid naming conflicts.
+
 ### v0.3.2 (2015-04-03)
 
 #### FEATURES
