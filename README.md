@@ -47,7 +47,7 @@ var AWESOME_PEOPLE = [
 var MyAppWithACombobox = React.createClass({
 
   getInitialState: function() {
-    return {value: {selectedValue: null, inputValue: ''}};
+    return {value: null};
   },
 
   getOptionsForInputValue: function(inputValue) {
@@ -73,7 +73,7 @@ var MyAppWithACombobox = React.createClass({
         onChange={this.handleChange}
         value={this.state.value}
       />
-      <p>Selection: {this.state.value.selectedValue}</p>
+      <p>Selection: {this.state.value}</p>
     </div>
   }
 
