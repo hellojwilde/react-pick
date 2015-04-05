@@ -82,3 +82,6 @@ var MyAppWithACombobox = React.createClass({
 
 Check out more [examples](https://github.com/hellojwilde/react-pick/tree/master/examples).
 
+### What sorts of components can you build with it?
+
+- [react-pick-datetime](https://github.com/hellojwilde/react-pick-datetime) - Components for selecting dates and times.
