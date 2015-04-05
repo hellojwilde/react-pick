@@ -1,3 +1,5 @@
+var isCIEnvironment = process.env.CONTINUOUS_INTEGRATION === 'true';
+
 module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -31,6 +33,7 @@ module.exports = function(config) {
     },
 
     plugins: [
+      require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
       require('karma-mocha'),
@@ -49,12 +52,10 @@ module.exports = function(config) {
     // level of logging
     logLevel: config.LOG_INFO,
 
-    // start these browsers
-    browsers: ['Firefox'],
-
     // make it work on Travis CI; based on:
     // <https://github.com/rackt/react-router/blob/master/karma.conf.js>
-    browserNoActivityTimeout: 90000,
-    singleRun: process.env.CONTINUOUS_INTEGRATION === 'true'
+    browsers: isCIEnvironment ? ['Firefox'] : ['Chrome'],
+    browserNoActivityTimeout: isCIEnvironment ? 90000 : 1000,
+    singleRun: isCIEnvironment
   });
 };

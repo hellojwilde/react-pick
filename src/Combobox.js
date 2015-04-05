@@ -88,6 +88,15 @@ var Combobox = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props.value !== nextProps.value && 
+        nextProps.value !== null) {
+      this.setState({
+        inputValue: this.props.getLabelForOption(nextProps.value)
+      });
+    }
+  },
+
   isInlineCompleting: function() {
     return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
   },
@@ -167,11 +176,7 @@ var Combobox = React.createClass({
     if (this.state.optionIndex !== null) {
       var option = this.state.options[this.state.optionIndex];
 
-      this.setState({
-        optionIndex: null,
-        inputValue: this.props.getLabelForOption(option)
-      });
-
+      this.setState({optionIndex: null});
       this.props.onChange(option);
       this.props.onComplete(option);
     }

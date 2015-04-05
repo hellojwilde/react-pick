@@ -23,7 +23,6 @@ function ensureCompletionPossible(fun) {
  *    - `optionIndex`
  *    - `optionsLength`
  */
-
 const ListKeyBindings = {
   getKeyBindings: function(props) {
     return {
@@ -55,7 +54,7 @@ const ListKeyBindings = {
   }),
 
   handleKeyDown: function(props, event) {
-    var binding = this.getKeyBindings(props)[event.keyCode];
+    const binding = this.getKeyBindings(props)[event.keyCode];
 
     if (binding) {
       event.preventDefault();

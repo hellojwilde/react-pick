@@ -1,6 +1,6 @@
 {
   "name": "react-pick",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Accessible autocompletion widgets, implemented in React.",
   "main": "lib/index.js",
   "repository": {
@@ -45,5 +45,8 @@
     "typeahead",
     "combobox",
     "a11y"
-  ]
+  ],
+  "dependencies": {
+    "karma-chrome-launcher": "^0.1.7"
+  }
 }

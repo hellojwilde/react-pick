@@ -9,7 +9,7 @@ var emptyFunction = require('../helpers/emptyFunction');
 
 describe('Combobox', function() {
   it('should propagate props like placeholder to the <input>', function() {
-    var ctx = TestUtils.renderIntoDocument(
+    var combobox = TestUtils.renderIntoDocument(
       <Combobox 
         placeholder="magic"
         getOptionsForInputValue={emptyFunction}
@@ -18,9 +18,27 @@ describe('Combobox', function() {
       />
     );
 
-    var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
+    var input = TestUtils.findRenderedDOMComponentWithTag(combobox, 'input');
     var inputAttributes = input.getDOMNode().attributes;
 
     expect(inputAttributes['placeholder'].value).toBe('magic');
+  });
+
+  it('should show value in <input>, even when the value changes', function() {
+    var combobox = TestUtils.renderIntoDocument(
+      <Combobox
+        getOptionsForInputValue={emptyFunction}
+        getLabelForOption={(option) => option.label}
+        onChange={emptyFunction}
+        value={{label: 'hi'}}
+      />
+    );
+
+    var input = TestUtils.findRenderedDOMComponentWithTag(combobox, 'input');
+    var inputNode = input.getDOMNode();
+
+    expect(inputNode.value).toEqual('hi');
+    combobox.setProps({value: {label: 'hello'}});
+    expect(inputNode.value).toEqual('hello');
   });
 });

@@ -1,3 +1,17 @@
+### v0.5.0 (2015-04-04)
+
+There's no longer use of `cloneWithProps`, which makes the library more predictable in certain use cases.
+
+#### CHANGES
+
+- `ListPopup` and `ListPopupOption` are now `List` and `ListOption`
+- `InputPopupWrapper` has been replaced with the much cleaner `InputWithPopup` which does not use `cloneWithProps`
+- `ListKeyBindings` no longer uses `cloneWithProps`
+
+#### BUGFIXES
+
+- `Combobox` should be much more resilient to external changes of `value`.
+
 ### v0.4.0 (2015-04-04)
 
 - [`c5c619c`](https://github.com/hellojwilde/react-pick/commit/c5c619c) Switch the format of the `value` to something like with a normal `<input>`. Change `onSelect` to `onComplete` to make things more consistent and avoid naming conflicts.
