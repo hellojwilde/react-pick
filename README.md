@@ -26,9 +26,9 @@ For out-of-the-box usage:
 For customizing `<Combobox>` and creating your own components:
 
 - [`<TypeaheadInput>`](https://github.com/hellojwilde/react-pick/blob/master/src/TypeaheadInput.js) - An `<input>` that robustly inserts "type ahead" text.
-- [`<InputPopupWrapper>`](https://github.com/hellojwilde/react-pick/blob/master/src/InputPopupWrapper.js) - Attaches a popup to an `<input>`.
-- [`<ListPopup>`](https://github.com/hellojwilde/react-pick/blob/master/src/ListPopup.js) - A popup for rendering a list of possible completion options.
-- [`<ListPopupOption>`](https://github.com/hellojwilde/react-pick/blob/master/src/ListPopupOption.js) - The default component for rendering options in `<ListPopup>`.
+- [`<InputWithPopup>`](https://github.com/hellojwilde/react-pick/blob/master/src/InputWithPopup.js) - Attaches a popup to an `<input>`.
+- [`<List>`](https://github.com/hellojwilde/react-pick/blob/master/src/List.js) - A popup for rendering a list of possible completion options.
+- [`<ListOption>`](https://github.com/hellojwilde/react-pick/blob/master/src/ListOption.js) - The default component for rendering options in `<ListPopup>`.
 
 ### How do you use `<Combobox>`?
 
