@@ -8,9 +8,10 @@ var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
 var getUniqueId = require('./helpers/getUniqueId');
+var throttle = require('lodash.throttle');
 
 /**
- * <Combobox> is a combobox-style widget that supports both inline- and 
+ * <Combobox> is a combobox-style widget that supports both inline- and
  * menu-based autocompletion based on an asynchonously-loaded result set.
  */
 var Combobox = React.createClass({
@@ -41,7 +42,7 @@ var Combobox = React.createClass({
     /**
      * The type of autocompletion behavior:
      *   - `menu` to display a popup menu with autocompletion options.
-     *   - `inline` to display the first autocompletion option as text 
+     *   - `inline` to display the first autocompletion option as text
      *      "typed ahead" of the user's input.
      *   - `both` to display both at once.
      * Default is `both`.
@@ -49,7 +50,7 @@ var Combobox = React.createClass({
     autocomplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
 
     /**
-     * Event handler fired when `value` changes to a new non-`null` value. 
+     * Event handler fired when `value` changes to a new non-`null` value.
      * Function called is passed `value`.
      */
     onComplete: React.PropTypes.func,
@@ -64,7 +65,12 @@ var Combobox = React.createClass({
      * The component to render for the list in the popup.
      * Default is `List`.
      */
-    listComponent: React.PropTypes.func
+    listComponent: React.PropTypes.func,
+
+    /**
+     * The number of milliseconds to throttle `getOptionsForInputValue()`.
+     */
+    getOptionsThrottleMs: React.PropTypes.number,
   },
 
   getDefaultProps: function() {
@@ -72,7 +78,8 @@ var Combobox = React.createClass({
       autocomplete: 'both',
       onComplete: emptyFunction,
       getLabelForOption: (option) => option+'',
-      listComponent: List
+      listComponent: List,
+      getOptionsThrottleMs: 500,
     };
   },
 
@@ -89,11 +96,14 @@ var Combobox = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.props.value !== nextProps.value && 
+    if (this.props.value !== nextProps.value &&
         nextProps.value !== null) {
       this.setState({
         inputValue: this.props.getLabelForOption(nextProps.value)
       });
+    }
+    if (this.props.getOptionsThrottleMs !== nextProps.getOptionsThrottleMs) {
+      this._bindUpdateOptions(nextProps.getOptionsThrottleMs);
     }
   },
 
@@ -114,7 +124,7 @@ var Combobox = React.createClass({
 
   getInputTypeaheadValue: function() {
     var {options, optionIndex} = this.state;
-    
+
     if (!this.isInlineCompleting() || optionIndex === null) {
       return null;
     }
@@ -122,18 +132,18 @@ var Combobox = React.createClass({
     return this.props.getLabelForOption(options[optionIndex]);
   },
 
-  updateOptionsForInputValue: function(inputValue) {
+  _updateOptionsForInputValue: function(inputValue) {
     var optionsPromise = this.optionsPromise =
       this.props.getOptionsForInputValue(inputValue);
-    
+
     optionsPromise.then((options) => {
       // It's possible that when we're fetching, we may get out-of-order
       // promise resolutions, even for cases like a contrived setTimeout demo.
       // This leads to really wonky behavior.
-      // 
+      //
       // Ensure that we only update the state based on the most recent promise
       // that was started for fetching.
-    
+
       if (this.optionsPromise !== optionsPromise) {
         return;
       }
@@ -144,6 +154,18 @@ var Combobox = React.createClass({
         optionIndex: (this.isInlineCompleting() && options.length) ? 0 : null
       });
     });
+  },
+
+  _bindUpdateOptions: function(throttleMs) {
+    var func = this._updateOptionsForInputValue;
+    if (throttleMs > 0) {
+      func = throttle(func, throttleMs, {trailing: true});
+    }
+    this.updateOptionsForInputValue = func;
+  },
+
+  componentWillMount: function() {
+    this._bindUpdateOptions(this.props.getOptionsThrottleMs);
   },
 
   handleInputChange: function(event) {
@@ -204,7 +226,7 @@ var Combobox = React.createClass({
         typeaheadValue={this.getInputTypeaheadValue()}
         value={this.state.inputValue}
         inputComponent={TypeaheadInput}>
-        <ListComponent 
+        <ListComponent
           options={this.state.options}
           optionIndex={this.state.optionIndex}
           onChange={this.handleListChange}

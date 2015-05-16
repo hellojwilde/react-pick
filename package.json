@@ -46,5 +46,8 @@
     "typeahead",
     "combobox",
     "a11y"
-  ]
+  ],
+  "dependencies": {
+    "lodash.throttle": "^3.0.2"
+  }
 }
