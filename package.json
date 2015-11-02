@@ -16,7 +16,7 @@
   "author": "Jonathan Wilde <hello@jwilde.me>",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.13.0"
+      "react": "^0.14.0"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",
@@ -35,7 +35,7 @@
     "karma-sourcemap-loader": "^0.3.4",
     "karma-webpack": "^1.5.0",
     "mocha": "^2.2.1",
-    "react": "^0.13.1",
+    "react": "^0.14.1",
     "style-loader": "^0.9.0",
     "webpack": "^1.7.3"
   },
@@ -46,5 +46,8 @@
     "typeahead",
     "combobox",
     "a11y"
-  ]
+  ],
+  "dependencies": {
+    "fbjs": "^0.4.0"
+  }
 }
