@@ -46,5 +46,8 @@
     "typeahead",
     "combobox",
     "a11y"
-  ]
+  ],
+  "dependencies": {
+    "fbjs": "^0.4.0"
+  }
 }

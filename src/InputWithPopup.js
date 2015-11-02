@@ -3,7 +3,7 @@ var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
 
-var joinClasses = require('react/lib/joinClasses');
+var joinClasses = require('fbjs/lib/joinClasses');
 var getUniqueId = require('./helpers/getUniqueId');
 
 /**
@@ -11,7 +11,7 @@ var getUniqueId = require('./helpers/getUniqueId');
  * similar contract) with an attached popup flyout.
  *
  * To use it, pass the values that you would normally pass to an <input> to
- * the <InputWithPopup>, and then toggle the 
+ * the <InputWithPopup>, and then toggle the
  */
 var InputWithPopup = React.createClass({
 
