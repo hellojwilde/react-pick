@@ -3,7 +3,7 @@ var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
 
-var joinClasses = require('react/lib/joinClasses');
+var joinClasses = require('fbjs/lib/joinClasses');
 
 /**
  * <List> is a component that renders the list that Combobox displays.
@@ -34,16 +34,16 @@ var List = React.createClass({
     onChange: React.PropTypes.func.isRequired,
 
     /**
-     * Event handler called if the user does an action to complete a given 
-     * option into the parent <Combobox> as the value. The function called 
+     * Event handler called if the user does an action to complete a given
+     * option into the parent <Combobox> as the value. The function called
      * receives the value of `optionIndex` to complete.
      */
     onComplete: React.PropTypes.func.isRequired,
 
     /**
-     * The React component to use render for each option of the list popup. 
-     * The component must support rendering passed properties and `className`, 
-     * and will receive the `option` and `getLabelForOption` to help with 
+     * The React component to use render for each option of the list popup.
+     * The component must support rendering passed properties and `className`,
+     * and will receive the `option` and `getLabelForOption` to help with
      * rendering.
      */
     optionComponent: React.PropTypes.func,
@@ -79,23 +79,23 @@ var List = React.createClass({
     var OptionComponent = this.props.optionComponent;
     var {
       className,
-      optionIndex, 
+      optionIndex,
       options,
-      getLabelForOption, 
+      getLabelForOption,
       getDescendantIdForOption,
       ...otherProps
     } = this.props;
 
     return (
-      <ul 
-        {...otherProps} 
+      <ul
+        {...otherProps}
         className={joinClasses('List', className)}
         role="listbox">
         {options.map((option, idx) => {
           return (
             <OptionComponent
               className={joinClasses(
-                'List-option', 
+                'List-option',
                 (idx === optionIndex) && 'List-option--isFocused'
               )}
               id={getDescendantIdForOption(idx)}
