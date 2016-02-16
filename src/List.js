@@ -3,7 +3,7 @@ var React = require('react/addons');
 
 var {PureRenderMixin} = React.addons;
 
-var joinClasses = require('react/lib/joinClasses');
+var classNames = require('classnames');
 
 /**
  * <List> is a component that renders the list that Combobox displays.
@@ -89,14 +89,15 @@ var List = React.createClass({
     return (
       <ul 
         {...otherProps} 
-        className={joinClasses('List', className)}
+        className={classNames('List', className)}
         role="listbox">
         {options.map((option, idx) => {
           return (
             <OptionComponent
-              className={joinClasses(
-                'List-option', 
-                (idx === optionIndex) && 'List-option--isFocused'
+              className={classNames(
+                'List-option', {
+                'List-option--isFocused': idx === optionIndex
+                }
               )}
               id={getDescendantIdForOption(idx)}
               getLabelForOption={getLabelForOption}

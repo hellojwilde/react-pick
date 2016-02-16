@@ -16,11 +16,13 @@
   "author": "Jonathan Wilde <hello@jwilde.me>",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.13.0"
+    "react": "^0.14.7"
   },
   "devDependencies": {
-    "babel-core": "^4.7.16",
+    "babel-core": "^5.0.0",
     "babel-loader": "^5.0.0",
+    "classnames": "^2.2.3",
+    "css-loader": "^0.23.1",
     "es6-promise-debounce": "git://github.com/bollwyvl/es6-promise-debounce",
     "expect": "^1.6.0",
     "gulp": "^3.8.11",
@@ -28,14 +30,17 @@
     "gulp-gh-pages": "^0.5.0",
     "gulp-webpack": "^1.3.1",
     "karma": "^0.12.31",
-    "karma-cli": "0.0.4",
     "karma-chrome-launcher": "^0.1.7",
+    "karma-cli": "0.0.4",
     "karma-firefox-launcher": "^0.1.4",
+    "karma-jsx-preprocessor": "0.0.9",
     "karma-mocha": "^0.1.10",
     "karma-sourcemap-loader": "^0.3.4",
     "karma-webpack": "^1.5.0",
     "mocha": "^2.2.1",
-    "react": "^0.13.1",
+    "react": "^0.14.7",
+    "react-addons-test-utils": "^0.14.7",
+    "react-dom": "^0.14.7",
     "style-loader": "^0.9.0",
     "webpack": "^1.7.3"
   },
