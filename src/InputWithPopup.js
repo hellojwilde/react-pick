@@ -1,4 +1,5 @@
 var ComponentPropType = require('./helpers/ComponentPropType');
+var React = require('react');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var classNames = require('classnames');

@@ -1,7 +1,6 @@
 var ListOption = require('./ListOption');
-var React = require('react/addons');
-
-var {PureRenderMixin} = React.addons;
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var classNames = require('classnames');
 
