@@ -88,7 +88,7 @@ var TypeaheadInput = React.createClass({
       return;
     }
 
-    var input = this.refs['input'].getDOMNode();
+    var input = this.refs['input'];
     var {value, typeaheadValue} = this.props;
     var typeahead = getTypeahead(value, typeaheadValue);
 

@@ -1,3 +1,4 @@
+var React = require('react');
 var TypeaheadInput = require('../TypeaheadInput');
 var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;

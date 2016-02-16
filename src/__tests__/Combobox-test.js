@@ -7,7 +7,7 @@ var emptyFunction = require('../helpers/emptyFunction');
 describe('Combobox', function() {
   it('should propagate props like placeholder to the <input>', function() {
     var combobox = TestUtils.renderIntoDocument(
-      <Combobox 
+      <Combobox
         placeholder="magic"
         getOptionsForInputValue={emptyFunction}
         onChange={emptyFunction}
