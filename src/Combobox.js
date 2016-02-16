@@ -1,11 +1,9 @@
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 var InputWithPopup = require('./InputWithPopup');
 var ListKeyBindings = require('./ListKeyBindings');
 var List = require('./List');
-var React = require('react/addons');
 var TypeaheadInput = require('./TypeaheadInput');
-
-var {PureRenderMixin} = React.addons;
-
 var emptyFunction = require('./helpers/emptyFunction');
 var getUniqueId = require('./helpers/getUniqueId');
 
