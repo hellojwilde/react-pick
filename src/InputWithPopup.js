@@ -1,7 +1,5 @@
 var ComponentPropType = require('./helpers/ComponentPropType');
-var React = require('react/addons');
-
-var {PureRenderMixin} = React.addons;
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var classNames = require('classnames');
 var getUniqueId = require('./helpers/getUniqueId');
