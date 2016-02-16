@@ -1,5 +1,6 @@
 var ExampleConstants = require('../ExampleConstants');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var StateInput = require('./StateInput');
 
 var App = React.createClass({
@@ -36,4 +37,7 @@ var App = React.createClass({
 
 });
 
-React.render(<App/>, document.body);
+ReactDOM.render(
+  <App />,
+  document.getElementById('container')
+);

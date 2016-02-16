@@ -1,8 +1,5 @@
 var InputWithPopup = require('../InputWithPopup');
-var React = require('react/addons');
-
-var {TestUtils} = React.addons;
-var {Simulate} = React.addons.TestUtils;
+var TestUtils = require('react-addons-test-utils');
 
 var expect = require('expect');
 var emptyFunction = require('../helpers/emptyFunction');

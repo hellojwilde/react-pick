@@ -1,9 +1,8 @@
 var ComponentPropType = require('./helpers/ComponentPropType');
-var React = require('react/addons');
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var {PureRenderMixin} = React.addons;
-
-var joinClasses = require('react/lib/joinClasses');
+var classNames = require('classnames');
 var getUniqueId = require('./helpers/getUniqueId');
 
 /**
@@ -63,13 +62,14 @@ var InputWithPopup = React.createClass({
           aria-haspopup="true"
           aria-owns={this.state.id}
           aria-expanded={isOpen+''}
-          className={joinClasses('InputWithPopup-input', className)}
+          className={classNames('InputWithPopup-input', className)}
         />
         <PopupComponent
           id={this.state.id}
-          className={joinClasses(
-            'InputWithPopup-popup',
-            isOpen && 'InputWithPopup-popup--isOpen'
+          className={classNames(
+            'InputWithPopup-popup', {
+            'InputWithPopup-popup--isOpen': isOpen
+            }
           )}>
           {children}
         </PopupComponent>
