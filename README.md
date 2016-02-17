@@ -1,4 +1,4 @@
-# react-pick
+# react-pick-2
 
 [![Build Status](https://travis-ci.org/hellojwilde/react-pick.svg?branch=master)](https://travis-ci.org/hellojwilde/react-pick)
 
