@@ -5,15 +5,19 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hellojwilde/react-pick.git"
+    "url": "https://github.com/andrewBalekha/react-pick-2.git"
   },
-  "homepage": "https://github.com/hellojwilde/react-pick",
-  "bugs": "https://github.com/hellojwilde/react-pick/issues",
+  "homepage": "https://github.com/andrewBalekha/react-pick-2",
+  "bugs": "https://github.com/andrewBalekha/react-pick-2/issues",
   "scripts": {
     "test": "karma start",
     "prepublish": "gulp build-node"
   },
   "author": "Jonathan Wilde <hello@jwilde.me>",
+  "contributors": [{
+    "name": "Andrey Balokha",
+    "email": "abalekha@gmail.com"
+  }],
   "license": "MIT",
   "peerDependencies": {
     "react": "^0.14.7"
