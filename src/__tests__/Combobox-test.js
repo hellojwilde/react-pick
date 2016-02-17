@@ -1,3 +1,4 @@
+var React = require('react');
 var Combobox = require('../Combobox');
 var TestUtils = require('react-addons-test-utils');
 
@@ -16,7 +17,7 @@ describe('Combobox', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(combobox, 'input');
-    var inputAttributes = input.getDOMNode().attributes;
+    var inputAttributes = input.attributes;
 
     expect(inputAttributes['placeholder'].value).toBe('magic');
   });
@@ -32,10 +33,9 @@ describe('Combobox', function() {
     );
 
     var input = TestUtils.findRenderedDOMComponentWithTag(combobox, 'input');
-    var inputNode = input.getDOMNode();
 
-    expect(inputNode.value).toEqual('hi');
+    expect(input.value).toEqual('hi');
     combobox.setProps({value: {label: 'hello'}});
-    expect(inputNode.value).toEqual('hello');
+    expect(input.value).toEqual('hello');
   });
 });

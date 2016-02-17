@@ -1,3 +1,4 @@
+var React = require('react');
 var InputWithPopup = require('../InputWithPopup');
 var TestUtils = require('react-addons-test-utils');
 
@@ -14,8 +15,8 @@ describe('InputWithPopup', function() {
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
     var menu = TestUtils.findRenderedDOMComponentWithClass(ctx, 'InputWithPopup-popup');
 
-    var inputAttributes = input.getDOMNode().attributes;
-    var menuAttributes = menu.getDOMNode().attributes;
+    var inputAttributes = input.attributes;
+    var menuAttributes = menu.attributes;
 
     expect(inputAttributes['aria-expanded'].value).toBe('true');
     expect(inputAttributes['aria-haspopup'].value).toBe('true');

@@ -1,5 +1,5 @@
-var React = require('react');
-var {Combobox, List, ListOption} = require('../../src');
+import React from 'react';
+var {Combobox, List} = require('../../src');
 
 require('../../src/styles.css');
 
