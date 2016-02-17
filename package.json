@@ -1,6 +1,6 @@
 {
   "name": "react-pick-2",
-  "version": "0.6.3",
+  "version": "0.6.5",
   "description": "Accessible autocompletion widgets, implemented in React.",
   "main": "lib/index.js",
   "repository": {
@@ -20,7 +20,14 @@
   }],
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.7"
+    "react": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-dom": "^0.14.7"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-dom": "^0.14.7"
   },
   "devDependencies": {
     "babel-core": "^6.5.2",
