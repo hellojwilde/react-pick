@@ -56,7 +56,7 @@ var FlickrInput = React.createClass({
     return (
       <Combobox
         {...this.props}
-        autocomplete="menu"
+        autoComplete="menu"
         getOptionsForInputValue={this.getOptionsForInputValue}
         getLabelForOption={() => ''}
         listComponent={FlickrInputList}
