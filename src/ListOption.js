@@ -1,6 +1,5 @@
-var React = require('react/addons');
-
-var {PureRenderMixin} = React.addons;
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 /**
  * <ListOption> is a default implementation for rows rendered for the 

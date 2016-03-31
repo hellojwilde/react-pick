@@ -1,8 +1,7 @@
+var React = require('react');
 var TypeaheadInput = require('../TypeaheadInput');
-var React = require('react/addons');
-
-var {TestUtils} = React.addons;
-var {Simulate} = React.addons.TestUtils;
+var TestUtils = require('react-addons-test-utils');
+var Simulate = TestUtils.Simulate;
 
 var expect = require('expect');
 var emptyFunction = require('../helpers/emptyFunction');
@@ -30,7 +29,7 @@ var TypeaheadInputTestWrapper = React.createClass({
   },
 
   render: function() {
-    var {onChange, ...otherProps} = this.props;
+    var {...otherProps} = this.props;
 
     return (
       <TypeaheadInput
@@ -52,14 +51,13 @@ describe('TypeaheadInput', function() {
 
     // Ensure that the text that we provided actually shows up in the input
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    var inputNode = input.getDOMNode();
-    expect(inputNode.value).toBe('hello');
+    expect(input.value).toBe('hello');
 
     // Ensure that changes that we supply actually show up in the input
     Simulate.change(input, {target: {value: 'hello!'}});
     Simulate.keyDown(input, {key: '!'});
     Simulate.keyUp(input, {key: '!'});
-    expect(inputNode.value).toBe('hello!');
+    expect(input.value).toBe('hello!');
   });
 
   it('shows typeahead text when typing forward', function() {
@@ -69,14 +67,13 @@ describe('TypeaheadInput', function() {
 
     // Ensure that there's no typehead
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    var inputNode = input.getDOMNode();
-    expect(inputNode.value).toBe('');
+    expect(input.value).toBe('');
 
     // Ensure that the typeahead shows up case-insensitively and is selected
     Simulate.change(input, {target: {value: 'c'}});
     Simulate.keyDown(input, {key: 'c'});
     Simulate.keyUp(input, {key: 'c'});
-    expect(inputNode.value).toBe('california');
+    expect(input.value).toBe('california');
   });
 
   it('omits the typehead if the completion text does not match', function() {
@@ -89,14 +86,13 @@ describe('TypeaheadInput', function() {
 
     // Ensure that there's no typehead
     var input = TestUtils.findRenderedDOMComponentWithTag(ctx, 'input');
-    var inputNode = input.getDOMNode();
-    expect(inputNode.value).toBe('h');
+    expect(input.value).toBe('h');
 
     // Ensure that there's still no typeahead
     Simulate.change(input, {target: {value: 'hi'}});
     Simulate.keyDown(input, {key: 'i'});
     Simulate.keyUp(input, {key: 'i'});
-    expect(inputNode.value).toBe('hi');
+    expect(input.value).toBe('hi');
   });
 
 });

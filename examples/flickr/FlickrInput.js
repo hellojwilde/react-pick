@@ -1,5 +1,5 @@
-var React = require('react');
-var {Combobox, List, ListOption} = require('../../src');
+import React from 'react';
+var {Combobox, List} = require('../../src');
 
 require('../../src/styles.css');
 
@@ -56,7 +56,7 @@ var FlickrInput = React.createClass({
     return (
       <Combobox
         {...this.props}
-        autocomplete="menu"
+        autoComplete="menu"
         getOptionsForInputValue={this.getOptionsForInputValue}
         getLabelForOption={() => ''}
         listComponent={FlickrInputList}

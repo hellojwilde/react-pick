@@ -1,6 +1,5 @@
-var React = require('react/addons');
-
-var {PureRenderMixin} = React.addons;
+var React = require('react');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var emptyFunction = require('./helpers/emptyFunction');
 
@@ -89,7 +88,7 @@ var TypeaheadInput = React.createClass({
       return;
     }
 
-    var input = this.refs['input'].getDOMNode();
+    var input = this.refs['input'];
     var {value, typeaheadValue} = this.props;
     var typeahead = getTypeahead(value, typeaheadValue);
 

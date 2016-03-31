@@ -1,43 +1,65 @@
 {
-  "name": "react-pick",
-  "version": "0.5.0",
+  "name": "react-pick-2",
+  "version": "0.6.7",
   "description": "Accessible autocompletion widgets, implemented in React.",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hellojwilde/react-pick.git"
+    "url": "https://github.com/andrewBalekha/react-pick-2.git"
   },
-  "homepage": "https://github.com/hellojwilde/react-pick",
-  "bugs": "https://github.com/hellojwilde/react-pick/issues",
+  "homepage": "https://github.com/andrewBalekha/react-pick-2",
+  "bugs": "https://github.com/andrewBalekha/react-pick-2/issues",
   "scripts": {
     "test": "karma start",
     "prepublish": "gulp build-node"
   },
   "author": "Jonathan Wilde <hello@jwilde.me>",
+  "contributors": [{
+    "name": "Andrey Balokha",
+    "email": "abalekha@gmail.com"
+  }],
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.13.0"
+    "react": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-dom": "^0.14.7"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-dom": "^0.14.7"
   },
   "devDependencies": {
-    "babel-core": "^4.7.16",
-    "babel-loader": "^5.0.0",
-    "es6-promise-debounce": "git://github.com/bollwyvl/es6-promise-debounce",
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.1",
+    "babel-plugin-transform-runtime": "^6.5.2",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-2": "^6.5.0",
+    "babel-runtime": "^5.8.34",
+    "classnames": "^2.2.3",
+    "css-loader": "^0.23.1",
+    "es6-promise-debounce": "git://github.com/bollwyvl/es6-promise-debounce.git",
     "expect": "^1.6.0",
     "gulp": "^3.8.11",
     "gulp-babel": "^4.0.0",
     "gulp-gh-pages": "^0.5.0",
-    "gulp-webpack": "^1.3.1",
-    "karma": "^0.12.31",
-    "karma-cli": "0.0.4",
+    "karma": "^0.13.2",
     "karma-chrome-launcher": "^0.1.7",
+    "karma-cli": "0.0.4",
     "karma-firefox-launcher": "^0.1.4",
+    "karma-jsx-preprocessor": "0.0.9",
     "karma-mocha": "^0.1.10",
     "karma-sourcemap-loader": "^0.3.4",
-    "karma-webpack": "^1.5.0",
+    "karma-webpack": "^1.7.0",
     "mocha": "^2.2.1",
-    "react": "^0.13.1",
+    "react": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-addons-test-utils": "^0.14.7",
+    "react-dom": "^0.14.7",
     "style-loader": "^0.9.0",
-    "webpack": "^1.7.3"
+    "webpack": "^1.12.13",
+    "webpack-stream": "^3.1.0"
   },
   "keywords": [
     "react",

@@ -2,7 +2,7 @@ var examplesWebpackConfig = require('./examples/webpack.config');
 var babel = require('gulp-babel');
 var ghPages = require('gulp-gh-pages');
 var gulp = require('gulp');
-var webpack = require('gulp-webpack');
+var webpack = require('webpack-stream');
 
 gulp.task('build-node-js', function() {
   return gulp.src('src/**/*.js')

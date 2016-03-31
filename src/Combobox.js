@@ -1,10 +1,9 @@
+import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+var List = require('./List');
 var InputWithPopup = require('./InputWithPopup');
 var ListKeyBindings = require('./ListKeyBindings');
-var List = require('./List');
-var React = require('react/addons');
 var TypeaheadInput = require('./TypeaheadInput');
-
-var {PureRenderMixin} = React.addons;
 
 var emptyFunction = require('./helpers/emptyFunction');
 var getUniqueId = require('./helpers/getUniqueId');
@@ -46,7 +45,7 @@ var Combobox = React.createClass({
      *   - `both` to display both at once.
      * Default is `both`.
      */
-    autocomplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
+    autoComplete: React.PropTypes.oneOf(['menu', 'inline', 'both']),
 
     /**
      * Event handler fired when `value` changes to a new non-`null` value. 
@@ -69,7 +68,7 @@ var Combobox = React.createClass({
 
   getDefaultProps: function() {
     return {
-      autocomplete: 'both',
+      autoComplete: 'both',
       onComplete: emptyFunction,
       getLabelForOption: (option) => option+'',
       listComponent: List
@@ -98,7 +97,7 @@ var Combobox = React.createClass({
   },
 
   isInlineCompleting: function() {
-    return ['inline', 'both'].indexOf(this.props.autocomplete) !== -1;
+    return ['inline', 'both'].indexOf(this.props.autoComplete) !== -1;
   },
 
   getDescendantIdForOption: function(idx) {
@@ -107,7 +106,7 @@ var Combobox = React.createClass({
 
   getMenuIsOpen: function() {
     var isMenuCompleting =
-      ['menu', 'both'].indexOf(this.props.autocomplete) !== -1;
+      ['menu', 'both'].indexOf(this.props.autoComplete) !== -1;
 
     return this.state.isOpen && isMenuCompleting;
   },
@@ -187,8 +186,8 @@ var Combobox = React.createClass({
   },
 
   render: function() {
-    var {isOpen, optionIndex, options} = this.state;
-    var {autocomplete, ...otherProps} = this.props;
+    var {optionIndex} = this.state;
+    var {autoComplete, ...otherProps} = this.props;
 
     var ListComponent = this.props.listComponent;
 
@@ -196,7 +195,7 @@ var Combobox = React.createClass({
       <InputWithPopup
         {...otherProps}
         aria-activedescendant={this.getDescendantIdForOption(optionIndex)}
-        aria-autocomplete={autocomplete}
+        aria-autocomplete={autoComplete}
         isOpen={this.getMenuIsOpen()}
         onBlur={this.handleComplete}
         onChange={this.handleInputChange}
