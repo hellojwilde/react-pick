@@ -13,7 +13,7 @@ Intially derived from Ryan Florence's awesome [react-autocomplete](https://githu
 
 ## Installation & Usage
 
-`npm install react-pick`
+`npm install react-pick-2`
 
 You'll need to make sure you're including the `styles.css` file in the root of the npm module in your app somehow. Or write your own, better stylesheet.
 

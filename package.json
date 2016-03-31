@@ -1,6 +1,6 @@
 {
   "name": "react-pick-2",
-  "version": "0.6.5",
+  "version": "0.6.7",
   "description": "Accessible autocompletion widgets, implemented in React.",
   "main": "lib/index.js",
   "repository": {
